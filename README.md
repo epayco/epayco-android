@@ -12,6 +12,20 @@ These epayco methods can be used to generate data in your android application. I
 ```
   compile 'co.epayco:epayco-android:1.1.0'
 ```
+
+## Usage
+
+```java
+Authentication auth = new Authentication();
+
+auth.setApiKey("491d6a0b6e992cf924edd8d3d088aff1");
+auth.setPrivateKey("268c8e0162990cf2ce97fa7ade2eff5a");
+auth.setLang("ES");
+auth.setTest(true);
+
+Epayco epayco = new Epayco(auth);
+```
+
 ## Validators
 
 ```java
@@ -29,19 +43,6 @@ epayco.validateCVC("123");
 
 //Validate Credit Card (card is a model card)
 epayco.validCard(card);
-```
-
-## Usage
-
-```java
-Authentication auth = new Authentication();
-
-auth.setApiKey("491d6a0b6e992cf924edd8d3d088aff1");
-auth.setPrivateKey("268c8e0162990cf2ce97fa7ade2eff5a");
-auth.setLang("ES");
-auth.setTest(true);
-
-Epayco epayco = new Epayco(auth);
 ```
 
 ### Create Token
