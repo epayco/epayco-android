@@ -9,7 +9,7 @@ These epayco methods can be used to generate data in your android application. I
 
 ## Installation
 
-Add ´maven { url 'https://jitpack.io' }´ to repositories
+Add maven https://jitpack.io to repositories
 
 ```gradle
 allprojects {
