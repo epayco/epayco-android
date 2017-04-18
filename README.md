@@ -70,7 +70,7 @@ card.setCvc("123");
 
 epayco.createToken(card, new EpaycoCallback() {
     @Override
-    public void onSuccess(JSONObject object) throws JSONException {}
+    public void onSuccess(JSONObject data) throws JSONException {}
 
     @Override
     public void onError(Exception error) {}
