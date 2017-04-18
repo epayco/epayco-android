@@ -32,7 +32,7 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    private static final String BASE_URL = "http://4433855b.ngrok.io";
+    private static final String BASE_URL = "https://api.secure.payco.co";
     private static final String BASE_URL_SECURE = "https://secure.payco.co";
 
     private String apiKey;
@@ -268,8 +268,7 @@ public class Epayco {
      ***************************/
 
     /**
-     *
-     * @param type        type gateway payment
+     * Create cash transaction
      * @param cash        data cash model
      * @param callback    response request api
      */
