@@ -12,6 +12,25 @@ These epayco methods can be used to generate data in your android application. I
 ```
   compile 'co.epayco:epayco-android:1.1.0'
 ```
+## Validators
+
+```java
+//Validate number credit card
+epayco.validNumberCard("4575623182290326");
+
+//Validate dates
+epayco.validExpiryMonth("12");
+epayco.validExpiryYear("2018");
+
+epayco.validateExpiryDate("12", "2018");
+
+//Validate CVC
+epayco.validateCVC("123");
+
+//Validate Credit Card (card is a model card)
+epayco.validCard(card);
+```
+
 ## Usage
 
 ```java
