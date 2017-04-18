@@ -12,8 +12,9 @@ These epayco methods can be used to generate data in your android application. I
 
 ## Installation
 
-compile 'co.epayco:epayco-android:1.1.0'
-
+```
+  compile 'co.epayco:epayco-android:1.1.0'
+```
 ## Usage
 
 ```java
