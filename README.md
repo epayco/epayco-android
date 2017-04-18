@@ -11,18 +11,18 @@ These epayco methods can be used to generate data in your android application. I
 
 Add ´maven { url 'https://jitpack.io' }´ to repositories
 
-```
+```gradle
 allprojects {
-    repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+  repositories {
+    ......
+    maven { url "https://jitpack.io" }
+  }
 }
 ```
 
 Add the dependency
 
-```
+```gradle
 compile 'com.github.epayco:epayco-android:1.01'
 ```
 
