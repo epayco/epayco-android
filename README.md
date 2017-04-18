@@ -9,8 +9,21 @@ These epayco methods can be used to generate data in your android application. I
 
 ## Installation
 
+Add ´maven { url 'https://jitpack.io' }´ to repositories
+
 ```
-  compile 'co.epayco:epayco-android:1.1.0'
+allprojects {
+    repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+}
+```
+
+Add the dependency
+
+```
+compile 'com.github.epayco:epayco-android:1.01'
 ```
 
 ## Usage
@@ -18,8 +31,8 @@ These epayco methods can be used to generate data in your android application. I
 ```java
 Authentication auth = new Authentication();
 
-auth.setApiKey("491d6a0b6e992cf924edd8d3d088aff1");
-auth.setPrivateKey("268c8e0162990cf2ce97fa7ade2eff5a");
+auth.setApiKey("YOU_PUBLIC_API_KEY");
+auth.setPrivateKey("YOU_PRIVATE_API_KEY");
 auth.setLang("ES");
 auth.setTest(true);
 

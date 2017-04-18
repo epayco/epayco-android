@@ -53,17 +53,17 @@ public class example extends AppCompatActivity {
 //
 //        System.out.println("validate: " + cardValid);
 
-//        epayco.createToken(card, new EpaycoCallback() {
-//            @Override
-//            public void onSuccess(JSONObject object) throws JSONException {
-//                System.out.println("dataEpayco: " + object.getString("id"));
-//            }
-//
-//            @Override
-//            public void onError(Exception error) {
-//                System.out.println("dataEpayco: " + error);
-//            }
-//        });
+        epayco.createToken(card, new EpaycoCallback() {
+            @Override
+            public void onSuccess(JSONObject object) throws JSONException {
+                System.out.println("dataEpayco: " + object.getString("id"));
+            }
+
+            @Override
+            public void onError(Exception error) {
+                System.out.println("dataEpayco: " + error);
+            }
+        });
 //
 //        Client client = new Client();
 //        client.setTokenId("Az9wdX4Wj3JRmr9NC");
