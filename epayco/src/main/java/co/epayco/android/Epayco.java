@@ -16,7 +16,9 @@ import co.epayco.android.models.Client;
 import co.epayco.android.models.Plan;
 import co.epayco.android.models.Pse;
 import co.epayco.android.models.Subscription;
+import co.epayco.android.util.DateUtils;
 import co.epayco.android.util.EpaycoCallback;
+import co.epayco.android.util.Util;
 import cz.msebera.android.httpclient.Header;
 
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLient;
@@ -78,6 +80,77 @@ public class Epayco {
         } catch (Exception e) {
             callback.onError(e);
         }
+    }
+
+    /***************************
+     * Validations credit card *
+     **************************/
+
+    /**
+     * Valid all parameters credit card
+     * @param card    Card model
+     * @return boolean
+     */
+    public Boolean validCard(@NonNull Card card) {
+        if (card.getCvc() == null) {
+            return Util.validateNumber(card.getNumber()) && validateExpiryDate(card.getMonth(), card.getYear());
+        } else {
+            return Util.validateNumber(card.getNumber()) && validateExpiryDate(card.getMonth(), card.getYear()) && validateCVC(card.getCvc());
+        }
+    }
+
+    /**
+     * Valid number credit card
+     * @param number    Number card model
+     * @return boolean
+     */
+    public Boolean validNumberCard(String number) {
+        return Util.isValidCardNumber(number);
+    }
+
+    /**
+     * Validate month expiration credit card
+     * @param month    Month card model
+     * @return boolean
+     */
+    public Boolean validExpiryMonth(String month) {
+        return Util.validateExpMonth(month);
+    }
+
+    /**
+     * Validate year expration credit card
+     * @param year    Year card model
+     * @return
+     */
+    public Boolean validExpiryYear(String year) {
+        return Util.validateExpYear(year);
+    }
+
+    /**
+     * Validate CVC
+     * @param cvc    CVC card model
+     * @return boolean
+     */
+    public Boolean validateCVC(String cvc) {
+        return Util.validateCVC(cvc);
+    }
+
+    /**
+     * Validate month and year expiration
+     * @param month    Month expiration card model
+     * @param year     Year expiration card model
+     * @return boolean
+     */
+    public boolean validateExpiryDate(String month, String year) {
+        if (!Util.validateExpMonth(month)) {
+            return false;
+        }
+        if (!Util.validateExpYear(year)) {
+            return false;
+        }
+        int expMonth = Integer.parseInt(month);
+        int expYear = Integer.parseInt(year);
+        return !DateUtils.hasMonthPassed(expYear, expMonth);
     }
 
     /*******************************

@@ -1,10 +1,7 @@
-Epayco
+Epayco android
 =====
 
-Epayco android
-
 ## Description
-
 
 Epayco-android facilitates the collection of credit card information without having sensitive data on your server.
 
