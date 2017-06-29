@@ -335,6 +335,19 @@ public class Epayco {
             callback.onError(e);
         }
     }
+    /**
+     * Return list Banks
+     * @param callback    response request api
+     */
+    public void getPseBanksList(@NonNull EpaycoCallback callback) {
+        String Base = base(true);
+        try {
+            get(Base + "/restpagos/pse/bancos.json?public_key=" + apiKey, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+    }
+
 
     /***************************
      * Access cash definitions *
