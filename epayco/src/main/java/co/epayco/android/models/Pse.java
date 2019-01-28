@@ -30,7 +30,12 @@ public class Pse {
     String city;
     String depto;
     String address;
-
+    String splitpayment;
+    String split_app_id;
+    String split_merchant_id;
+    String split_type;
+    String split_primary_receiver;
+    String split_primary_receiver_fee;
     public Pse() {}
 
     public String getBank() {
@@ -215,5 +220,53 @@ public class Pse {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+     public String getSplitpayment() {
+        return splitpayment;
+    }
+
+    public void setSplitpayment(String splitpayment) {
+        this.splitpayment = splitpayment;
+    }
+
+     public String getSplit_app_id() {
+        return split_app_id;
+    }
+
+    public void setSplit_app_id(String split_app_id) {
+        this.split_app_id = split_app_id;
+    }
+
+     public String getSplit_merchant_id() {
+        return split_merchant_id;
+    }
+
+    public void setSplit_merchant_id(String split_merchant_id) {
+        this.split_merchant_id = split_merchant_id;
+    }
+    
+     public String getSplit_type() {
+        return split_type;
+    }
+
+    public void setSplit_type(String split_type) {
+        this.split_type = split_type;
+    }
+    
+    public String getSplit_primary_receiver() {
+        return split_primary_receiver;
+    }
+
+    public void setSplit_primary_receiver(String split_primary_receiver) {
+        this.split_primary_receiver = split_primary_receiver;
+    }
+
+    public String getSplit_primary_receiver_fee() {
+        return split_primary_receiver_fee;
+    }
+
+    public void setSplit_primary_receiver_fee(String split_primary_receiver_fee) {
+        this.split_primary_receiver_fee = split_primary_receiver_fee;
     }
 }

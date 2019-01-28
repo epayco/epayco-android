@@ -116,6 +116,12 @@ public class EpaycoNetworkUtils {
         chargeParams.put("departament", charge.getDepartament());
         chargeParams.put("country", charge.getCountry());
         chargeParams.put("address", charge.getAddress());
+        chargeParams.put("splitpayment", charge.getSplitpayment());
+        chargeParams.put("split_app_id", charge.getSplit_app_id());
+        chargeParams.put("split_merchant_id", charge.getSplit_merchant_id());
+        chargeParams.put("split_type", charge.getSplit_type());
+        chargeParams.put("split_primary_receiver", charge.getSplit_primary_receiver());
+        chargeParams.put("split_primary_receiver_fee", charge.getSplit_primary_receiver_fee());
 
         return chargeParams;
     }
@@ -165,6 +171,12 @@ public class EpaycoNetworkUtils {
         pseParams.put("extra3", encrypt(pse.getExtra3(), secretKey));
         pseParams.put("ciudad", encrypt(pse.getCity(), secretKey));
         pseParams.put("depto", encrypt(pse.getDepto(), secretKey));
+        pseParams.put("splitpayment", encrypt(pse.getSplitpayment(),secretKey));
+        pseParams.put("split_app_id", encrypt(pse.getSplit_app_id(),secretKey));
+        pseParams.put("split_merchant_id", encrypt(pse.getSplit_merchant_id(),secretKey));
+        pseParams.put("split_type", encrypt(pse.getSplit_type(),secretKey));
+        pseParams.put("split_primary_receiver", encrypt(pse.getSplit_primary_receiver(),secretKey));
+        pseParams.put("split_primary_receiver_fee", encrypt(pse.getSplit_primary_receiver_fee(),secretKey));
 
         //System
         pseParams.put("enpruebas", encrypt(new String(test).toUpperCase(), secretKey));
@@ -215,6 +227,12 @@ public class EpaycoNetworkUtils {
         cashParams.put("ciudad", encrypt(cash.getCity(), secretKey));
         cashParams.put("depto", encrypt(cash.getDepto(), secretKey));
         cashParams.put("direccion", encrypt(cash.getAddress(), secretKey));
+        cashParams.put("splitpayment", encrypt(cash.getSplitpayment(),secretKey));
+        cashParams.put("split_app_id", encrypt(cash.getSplit_app_id(),secretKey));
+        cashParams.put("split_merchant_id", encrypt(cash.getSplit_merchant_id(),secretKey));
+        cashParams.put("split_type", encrypt(cash.getSplit_type(),secretKey));
+        cashParams.put("split_primary_receiver", encrypt(cash.getSplit_primary_receiver(),secretKey));
+        cashParams.put("split_primary_receiver_fee", encrypt(cash.getSplit_primary_receiver_fee(),secretKey));
 
         //System
         cashParams.put("enpruebas", encrypt(new String(test).toUpperCase(), secretKey));

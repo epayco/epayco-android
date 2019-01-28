@@ -293,6 +293,22 @@ epayco.getPseTransaction("transaction_id", new EpaycoCallback() {
 });
 ```
 
+#### Split Payments
+
+Previous requirements: https://docs.epayco.co/tools/split-payment
+
+```java
+Pse pse = new Pse();
+//Other customary parameters...
+                pse.setSplitpayment ("true");
+                pse.setSplit_app_id ("19520");
+                pse.setSplit_merchant_id ("17511");
+                pse.setSplit_type ("02");
+                pse.setSplit_primary_receiver ("19520");
+                pse.setSplit_primary_receiver_fee ("10");
+
+```
+
 ### Cash
 
 #### Create
@@ -351,6 +367,23 @@ epayco.getReferencePayment("epayco_reference", new EpaycoCallback() {
 });
 ```
 
+#### Split Payments
+
+Previous requirements: https://docs.epayco.co/tools/split-payment
+
+```java
+Cash cash = new Cash();
+//Other customary parameters...
+                cash.setSplitpayment ("true");
+                cash.setSplit_app_id ("19520");
+                cash.setSplit_merchant_id ("17511");
+                cash.setSplit_type ("02");
+                cash.setSplit_primary_receiver ("19520");
+                cash.setSplit_primary_receiver_fee ("10");
+
+```
+
+
 ### Payment
 
 #### Create
@@ -406,4 +439,19 @@ epayco.getReferencePayment("epayco_reference", new EpaycoCallback() {
     @Override
     public void onError(Exception error) {}
 });
+```
+#### Split Payments
+
+Previous requirements: https://docs.epayco.co/tools/split-payment
+
+```java
+Charge charge = new Charge();
+//Other customary parameters...
+                charge.setSplitpayment ("true");
+                charge.setSplit_app_id ("19520");
+                charge.setSplit_merchant_id ("17511");
+                charge.setSplit_type ("02");
+                charge.setSplit_primary_receiver ("19520");
+                charge.setSplit_primary_receiver_fee ("10");
+
 ```

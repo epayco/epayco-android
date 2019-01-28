@@ -37,12 +37,18 @@ public class Epayco {
     private static final String BASE_URL = "https://api.secure.payco.co";
     private static final String BASE_URL_SECURE = "https://secure.payco.co";
 
+    private static final int MAX_TIME_OUT= 190*1000;
+
     private String apiKey;
     private String privateKey;
     private String lang;
     private Boolean test;
 
     public Epayco(Authentication auth) {
+        //Tiempos de respuesta modificados
+        client.setConnectTimeout(MAX_TIME_OUT);
+        client.setResponseTimeout(MAX_TIME_OUT);
+
         this.apiKey = auth.getApiKey();
         this.privateKey = auth.getPrivateKey();
         this.lang = auth.getLang();
@@ -335,19 +341,6 @@ public class Epayco {
             callback.onError(e);
         }
     }
-    /**
-     * Return list Banks
-     * @param callback    response request api
-     */
-    public void getPseBanksList(@NonNull EpaycoCallback callback) {
-        String Base = base(true);
-        try {
-            get(Base + "/restpagos/pse/bancos.json?public_key=" + apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
-    }
-
 
     /***************************
      * Access cash definitions *
