@@ -89,7 +89,7 @@ client.setName("Cliente epayco");
 client.setEmail("cliente@epayco.co");
 client.setPhone("305274321");
 client.setDefaultCard(true);
-client.setUse_default_card_customer(true);/*si el usuario quiere que se cobre con la tarjeta que actualmente el customer tiene como default = true*/
+
 epayco.createCustomer(client, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
@@ -416,6 +416,7 @@ charge.setCurrency("COP");
 charge.setDues("12");
 charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 //Optional
+charge.setUse_default_card_customer(true);/*si el usuario quiere que se cobre con la tarjeta que actualmente el customer tiene como default = true*/
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");
 charge.setExtra1("");

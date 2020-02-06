@@ -22,6 +22,7 @@ public class Charge {
     String dues;
     String ip;
     //Optional
+    String use_default_card_customer;
     String urlResponse;
     String urlConfirmation;
     String extra1;
@@ -277,5 +278,14 @@ public class Charge {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    
+    public Boolean getUse_default_card_customer() {
+        return use_default_card_customer;
+    }
+
+    public void setUse_default_card_customer(Boolean use_default_card_customer) {
+        this.use_default_card_customer = use_default_card_customer;
     }
 }

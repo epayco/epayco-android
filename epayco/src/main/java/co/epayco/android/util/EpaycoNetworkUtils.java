@@ -39,7 +39,7 @@ public class EpaycoNetworkUtils {
         clientParams.put("email", client.getEmail());
         clientParams.put("phone", client.getPhone());
         clientParams.put("default", client.getDefaultCard());
-        clientParams.put("use_default_card_customer", client.getUse_default_card_customer());
+       
 
         return clientParams;
     }
@@ -111,6 +111,7 @@ public class EpaycoNetworkUtils {
         chargeParams.put("ip", charge.getIp());
 
         //Optional
+        chargeParams.put("use_default_card_customer", charge.getUse_default_card_customer());
         chargeParams.put("url_response", charge.getUrlResponse());
         chargeParams.put("url_confirmation", charge.getUrlConfirmation());
         chargeParams.put("extra1", charge.getExtra1());
