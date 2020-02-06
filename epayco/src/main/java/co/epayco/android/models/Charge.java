@@ -22,7 +22,7 @@ public class Charge {
     String dues;
     String ip;
     //Optional
-    String use_default_card_customer;
+    Boolean use_default_card_customer;
     String urlResponse;
     String urlConfirmation;
     String extra1;

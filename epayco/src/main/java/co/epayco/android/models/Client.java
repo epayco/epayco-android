@@ -22,7 +22,6 @@ public class Client {
         this.email = email;
         this.phone = phone;
         this.defaultCard = defaultCard;
-        this.use_default_card_customer = use_default_card_customer;
     }
 
     public String getTokenId() {

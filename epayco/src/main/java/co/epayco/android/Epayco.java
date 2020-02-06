@@ -208,37 +208,6 @@ public class Epayco {
     }
 
 
-    
-    /**
-     * Update customer from id
-     * @param uid      id customer
-     * @param callback response request api
-     */
-    public void updateCustomer(String uid, @NonNull EpaycoCallback callback) {
-        String Base = base(false);
-        try {
-            post(Base + "/payment/v1/customer/edit/" + apiKey + "/" + uid, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
-
-    }
-
-
-    /**
-     * Delete token customer from id
-     * @param uid      id customer
-     * @param callback response request api
-     */
-    public void deletokenCustomer(@NonNull Client client,@NonNull EpaycoCallback callback) {
-        String Base = base(false);
-        try {
-            post(Base + "/v1/remove/token", callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
-
-    }
 
     /***************************
      * Access plan definitions *
