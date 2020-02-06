@@ -88,6 +88,7 @@ public class Epayco {
         }
     }
 
+
     /***************************
      * Validations credit card *
      **************************/
@@ -204,6 +205,39 @@ public class Epayco {
         } catch (Exception e) {
             callback.onError(e);
         }
+    }
+
+
+    
+    /**
+     * Update customer from id
+     * @param uid      id customer
+     * @param callback response request api
+     */
+    public void updateCustomer(String uid, @NonNull EpaycoCallback callback) {
+        String Base = base(false);
+        try {
+            post(Base + "/payment/v1/customer/edit/" + apiKey + "/" + uid, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+
+    }
+
+
+    /**
+     * Delete token customer from id
+     * @param uid      id customer
+     * @param callback response request api
+     */
+    public void deletokenCustomer(@NonNull EpaycoCallback callback) {
+        String Base = base(false);
+        try {
+            post(Base + "/v1/remove/token", callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+
     }
 
     /***************************
@@ -356,13 +390,19 @@ public class Epayco {
 
         switch (cash.getType()) {
             case "efecty":
-                    url = "/restpagos/pagos/efecties.json";
+                url = "/restpagos/v2/efectivo/efecty";
                 break;
             case "baloto":
-                url = "/restpagos/pagos/balotos.json";
+                url = "/restpagos/v2/efectivo/baloto";
                 break;
             case "gana":
-                url = "/restpagos/pagos/ganas.json";
+                url = "/restpagos/v2/efectivo/gana";
+                break;
+            case "redservi":
+                url = "/restpagos/v2/efectivo/redservi";
+                break;
+            case "puntored":
+                url = "/restpagos/v2/efectivo/puntored";
                 break;
             default:
                 System.out.println("error payment");

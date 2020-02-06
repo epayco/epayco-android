@@ -201,41 +201,41 @@ public class EpaycoNetworkUtils {
 
         //Schema
         cashParams.put("public_key", apiKey);
-        cashParams.put("fechaexpiracion", encrypt(cash.getEndDate(), secretKey));
+        cashParams.put("fechaexpiracion", cash.getEndDate());
 
         //Required
-        cashParams.put("tipo_doc", encrypt(cash.getDocType(), secretKey));
-        cashParams.put("documento", encrypt(cash.getDocNumber(), secretKey));
-        cashParams.put("nombres", encrypt(cash.getName(), secretKey));
-        cashParams.put("apellidos", encrypt(cash.getLastName(), secretKey));
-        cashParams.put("email", encrypt(cash.getEmail(), secretKey));
-        cashParams.put("factura", encrypt(cash.getInvoice(), secretKey));
-        cashParams.put("descripcion", encrypt(cash.getDescription(), secretKey));
-        cashParams.put("valor", encrypt(cash.getValue(), secretKey));
-        cashParams.put("iva", encrypt(cash.getTax(), secretKey));
-        cashParams.put("baseiva", encrypt(cash.getTaxBase(), secretKey));
-        cashParams.put("celular", encrypt(cash.getPhone(), secretKey));
-        cashParams.put("moneda", encrypt(cash.getCurrency(), secretKey));
+        cashParams.put("tipo_doc", cash.getDocType());
+        cashParams.put("documento", cash.getDocNumber());
+        cashParams.put("nombres", cash.getName());
+        cashParams.put("apellidos", cash.getLastName());
+        cashParams.put("email", cash.getEmail());
+        cashParams.put("factura", cash.getInvoice());
+        cashParams.put("descripcion", cash.getDescription());
+        cashParams.put("valor", cash.getValue());
+        cashParams.put("iva", cash.getTax());
+        cashParams.put("baseiva", cash.getTaxBase());
+        cashParams.put("celular", cash.getPhone());
+        cashParams.put("moneda", cash.getCurrency());
 
         //Optional
-        cashParams.put("url_respuesta", encrypt(cash.getUrlResponse(), secretKey));
-        cashParams.put("url_confirmacion", encrypt(cash.getUrlConfirmation(), secretKey));
-        cashParams.put("extra1", encrypt(cash.getExtra1(), secretKey));
-        cashParams.put("extra2", encrypt(cash.getExtra2(), secretKey));
-        cashParams.put("extra3", encrypt(cash.getExtra3(), secretKey));
-        cashParams.put("pais", encrypt(cash.getCountry(), secretKey));
-        cashParams.put("ciudad", encrypt(cash.getCity(), secretKey));
-        cashParams.put("depto", encrypt(cash.getDepto(), secretKey));
-        cashParams.put("direccion", encrypt(cash.getAddress(), secretKey));
-        cashParams.put("splitpayment", encrypt(cash.getSplitpayment(),secretKey));
-        cashParams.put("split_app_id", encrypt(cash.getSplit_app_id(),secretKey));
-        cashParams.put("split_merchant_id", encrypt(cash.getSplit_merchant_id(),secretKey));
-        cashParams.put("split_type", encrypt(cash.getSplit_type(),secretKey));
-        cashParams.put("split_primary_receiver", encrypt(cash.getSplit_primary_receiver(),secretKey));
-        cashParams.put("split_primary_receiver_fee", encrypt(cash.getSplit_primary_receiver_fee(),secretKey));
+        cashParams.put("url_respuesta", cash.getUrlResponse());
+        cashParams.put("url_confirmacion", cash.getUrlConfirmation());
+        cashParams.put("extra1", cash.getExtra1());
+        cashParams.put("extra2", cash.getExtra2());
+        cashParams.put("extra3", cash.getExtra3());
+        cashParams.put("pais", cash.getCountry());
+        cashParams.put("ciudad", cash.getCity());
+        cashParams.put("depto", cash.getDepto());
+        cashParams.put("direccion", cash.getAddress());
+        cashParams.put("splitpayment", cash.getSplitpayment());
+        cashParams.put("split_app_id", cash.getSplit_app_id());
+        cashParams.put("split_merchant_id", cash.getSplit_merchant_id());
+        cashParams.put("split_type", cash.getSplit_type());
+        cashParams.put("split_primary_receiver", cash.getSplit_primary_receiver());
+        cashParams.put("split_primary_receiver_fee",cash.getSplit_primary_receiver_fee());
 
         //System
-        cashParams.put("enpruebas", encrypt(new String(test).toUpperCase(), secretKey));
+        cashParams.put("enpruebas", new String(test).toUpperCase());
         cashParams.put("i", generateI());
         cashParams.put("lenguaje", "android");
 
