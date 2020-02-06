@@ -36,6 +36,7 @@ public class Pse {
     String split_type;
     String split_primary_receiver;
     String split_primary_receiver_fee;
+    String ip;
     public Pse() {}
 
     public String getBank() {
@@ -268,5 +269,13 @@ public class Pse {
 
     public void setSplit_primary_receiver_fee(String split_primary_receiver_fee) {
         this.split_primary_receiver_fee = split_primary_receiver_fee;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

@@ -5,6 +5,9 @@ public class Subscription {
     String idPlan;
     String customer;
     String tokenCard;
+    String ip;
+      //Optional
+    String urlConfirmation;
 
     public Subscription() {}
 
@@ -30,5 +33,20 @@ public class Subscription {
 
     public void setTokenCard(String tokenCard) {
         this.tokenCard = tokenCard;
+    }
+
+    public String getUrlConfirmation() {
+        return urlConfirmation;
+    }
+
+    public void setUrlConfirmation(String urlConfirmation) {
+        this.urlConfirmation = urlConfirmation;
+    }
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

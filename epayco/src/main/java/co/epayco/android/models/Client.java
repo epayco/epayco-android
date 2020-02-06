@@ -5,6 +5,7 @@ public class Client {
 
     String tokenId, name, email, phone;
     Boolean defaultCard = true;
+    Boolean use_default_card_customer = true;
 
     public Client() {}
 
@@ -13,13 +14,16 @@ public class Client {
             String name,
             String email,
             String phone,
-            Boolean defaultCard)
+            Boolean defaultCard,
+            Boolean use_default_card_customer
+            )
     {
         this.tokenId = tokenId;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.defaultCard = defaultCard;
+        this.use_default_card_customer = use_default_card_customer;
     }
 
     public String getTokenId() {
@@ -61,4 +65,13 @@ public class Client {
     public void setDefaultCard(Boolean defaultCard) {
         this.defaultCard = defaultCard;
     }
+
+    public Boolean getUse_default_card_customer() {
+        return use_default_card_customer;
+    }
+
+    public void setUse_default_card_customer(Boolean use_default_card_customer) {
+        this.use_default_card_customer = use_default_card_customer;
+    }
+
 }

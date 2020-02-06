@@ -230,7 +230,7 @@ public class Epayco {
      * @param uid      id customer
      * @param callback response request api
      */
-    public void deletokenCustomer(@NonNull EpaycoCallback callback) {
+    public void deletokenCustomer(@NonNull Client client,@NonNull EpaycoCallback callback) {
         String Base = base(false);
         try {
             post(Base + "/v1/remove/token", callback);

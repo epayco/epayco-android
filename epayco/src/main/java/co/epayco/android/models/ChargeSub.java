@@ -8,7 +8,7 @@ public class ChargeSub {
     String tokenCard;
     String docType;
     String docNumber;
-
+    String ip;
     public ChargeSub() {}
 
     public String getIdPlan() {
@@ -49,5 +49,13 @@ public class ChargeSub {
 
     public void setDocNumber(String docNumber) {
         this.docNumber = docNumber;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

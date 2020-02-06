@@ -23,7 +23,7 @@ allprojects {
 Add the dependency
 
 ```gradle
-compile 'com.github.epayco:epayco-android:1.01'
+implementation 'com.github.epayco:epayco-android:v2.02'
 ```
 
 ## Usage
@@ -89,7 +89,7 @@ client.setName("Cliente epayco");
 client.setEmail("cliente@epayco.co");
 client.setPhone("305274321");
 client.setDefaultCard(true);
-
+client.setUse_default_card_customer(true);/*si el usuario quiere que se cobre con la tarjeta que actualmente el customer tiene como default = true*/
 epayco.createCustomer(client, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
@@ -135,20 +135,6 @@ epayco.updateCustomer("id_customer", new EpaycoCallback() {
     public void onError(Exception error) {}
 });
 ```
-
-#### Delete
-
-```java
-
-epayco.deletokenCustomer("id_customer", new EpaycoCallback() {
-    @Override
-    public void onSuccess(JSONObject data) throws JSONException {}
-
-    @Override
-    public void onError(Exception error) {}
-});
-```
-
 
 ### Plans
 
@@ -209,6 +195,10 @@ Subscription subscription = new Subscription();
 subscription.setTokenCard("id_token");
 subscription.setCustomer("id_customer");
 subscription.setIdPlan("reactcourse");
+/*Optional parameter: if these parameter it's not send, system get ePayco dashboard's url_confirmation*/
+subscription.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
+
+
 
 epayco.createSubscription(subscription, new EpaycoCallback() {
     @Override
@@ -253,6 +243,7 @@ sub.setCustomer("id_customer");
 sub.setTokenCard("id_token");
 sub.setDocType("CC");
 sub.setDocNumber("5234567");
+sub.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 epayco.chargeSubscription(sub, new EpaycoCallback() {
     @Override
@@ -290,7 +281,7 @@ pse.setCurrency("COP");
 pse.setCountry("CO");
 pse.setUrlResponse("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
 pse.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
-
+pse.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 //Optional
 pse.setExtra1("");
 pse.setExtra2("");
@@ -360,7 +351,7 @@ cash.setTax("16000");
 cash.setTaxBase("100000");
 cash.setPhone("3010000001");
 cash.setCurrency("COP");
-
+cash.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 //Optional
 cash.setUrlResponse("");
 cash.setUrlConfirmation("");
@@ -435,7 +426,7 @@ charge.setTax("16000");
 charge.setTaxBase("100000");
 charge.setCurrency("COP");
 charge.setDues("12");
-
+charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 //Optional
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");

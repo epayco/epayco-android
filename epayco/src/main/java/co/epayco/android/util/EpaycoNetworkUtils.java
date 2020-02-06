@@ -39,6 +39,7 @@ public class EpaycoNetworkUtils {
         clientParams.put("email", client.getEmail());
         clientParams.put("phone", client.getPhone());
         clientParams.put("default", client.getDefaultCard());
+        clientParams.put("use_default_card_customer", client.getUse_default_card_customer());
 
         return clientParams;
     }
@@ -66,6 +67,7 @@ public class EpaycoNetworkUtils {
         subscriptionParams.put("id_plan", subscription.getIdPlan());
         subscriptionParams.put("customer", subscription.getCustomer());
         subscriptionParams.put("token_card", subscription.getTokenCard());
+         subscriptionParams.put("url_confirmation", subscription.getUrlConfirmation());
 
         return subscriptionParams;
     }
@@ -80,6 +82,7 @@ public class EpaycoNetworkUtils {
         subscriptionParams.put("token_card", subscription.getTokenCard());
         subscriptionParams.put("doc_type", subscription.getDocType());
         subscriptionParams.put("doc_number", subscription.getDocNumber());
+        subscriptionParams.put("ip", subscription.getIp());
 
         return subscriptionParams;
     }
@@ -105,6 +108,7 @@ public class EpaycoNetworkUtils {
         chargeParams.put("tax_base", charge.getTaxBase());
         chargeParams.put("currency", charge.getCurrency());
         chargeParams.put("dues", charge.getDues());
+        chargeParams.put("ip", charge.getIp());
 
         //Optional
         chargeParams.put("url_response", charge.getUrlResponse());
@@ -162,6 +166,7 @@ public class EpaycoNetworkUtils {
         pseParams.put("pais", encrypt(pse.getCountry(), secretKey));
         pseParams.put("url_respuesta", encrypt(pse.getUrlResponse(), secretKey));
         pseParams.put("url_confirmacion", encrypt(pse.getUrlConfirmation(), secretKey));
+        pseParams.put("ip", encrypt(pse.getIp(), secretKey));
 
         //Optional
         pseParams.put("metodoconfirmacion", encrypt("GET", secretKey));
@@ -216,6 +221,7 @@ public class EpaycoNetworkUtils {
         cashParams.put("baseiva", cash.getTaxBase());
         cashParams.put("celular", cash.getPhone());
         cashParams.put("moneda", cash.getCurrency());
+        cashParams.put("ip", cash.getIp());
 
         //Optional
         cashParams.put("url_respuesta", cash.getUrlResponse());

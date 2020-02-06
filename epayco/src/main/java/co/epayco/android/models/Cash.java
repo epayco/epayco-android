@@ -20,6 +20,7 @@ public class Cash {
     String phone;
     String taxBase;
     String currency;
+    String ip;
 
     //Optional
     String urlResponse;
@@ -271,5 +272,13 @@ public class Cash {
 
     public void setSplit_primary_receiver_fee(String split_primary_receiver_fee) {
         this.split_primary_receiver_fee = split_primary_receiver_fee;
+    }
+
+        public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

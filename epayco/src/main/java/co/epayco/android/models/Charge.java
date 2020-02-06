@@ -20,7 +20,7 @@ public class Charge {
     String taxBase;
     String currency;
     String dues;
-
+    String ip;
     //Optional
     String urlResponse;
     String urlConfirmation;
@@ -271,5 +271,11 @@ public class Charge {
     public void setSplit_primary_receiver_fee(String split_primary_receiver_fee) {
         this.split_primary_receiver_fee = split_primary_receiver_fee;
     }
+    public String getIp() {
+        return ip;
+    }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 }
