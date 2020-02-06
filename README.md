@@ -123,18 +123,6 @@ epayco.getCustomerList(new EpaycoCallback() {
 });
 ```
 
-#### Update
-
-```java
-
-epayco.updateCustomer("id_customer", new EpaycoCallback() {
-    @Override
-    public void onSuccess(JSONObject data) throws JSONException {}
-
-    @Override
-    public void onError(Exception error) {}
-});
-```
 
 ### Plans
 
