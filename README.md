@@ -23,7 +23,7 @@ allprojects {
 Add the dependency
 
 ```gradle
-implementation 'com.github.epayco:epayco-android:Tag'
+implementation 'com.github.epayco:epayco-android:v3.0'
 ```
 
 ## Usage
