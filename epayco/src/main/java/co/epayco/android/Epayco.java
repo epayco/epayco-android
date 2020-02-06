@@ -259,6 +259,7 @@ public class Epayco {
      ************************************/
 
     /**
+     *
      * Create subscription
      * @param sub         data model subscription
      * @param callback    response request api
