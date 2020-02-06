@@ -416,7 +416,8 @@ charge.setCurrency("COP");
 charge.setDues("12");
 charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 //Optional
-charge.setUse_default_card_customer(true);/*si el usuario quiere que se cobre con la tarjeta que actualmente el customer tiene como default = true*/
+charge.setUse_default_card_customer(true);/*
+if the user wants to be charged with the card that the customer currently has as default =true*/
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");
 charge.setExtra1("");
