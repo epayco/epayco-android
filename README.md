@@ -123,6 +123,22 @@ epayco.getCustomerList(new EpaycoCallback() {
 });
 ```
 
+#### Delete token customer
+
+```java
+Client client = new Client();
+client.setFranchise("visa");
+client.setMask("457562******0326");
+client.setCustomer_id("id_customer");
+
+epayco.deleteTokenCustomer(client, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
 
 ### Plans
 
