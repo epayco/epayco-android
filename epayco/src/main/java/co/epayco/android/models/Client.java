@@ -86,7 +86,7 @@ public class Client {
     }
 
         public String getCustomer_id() {
-        return mask;
+        return customer_id;
     }
 
     public void setCustomer_id(String customer_id) {
