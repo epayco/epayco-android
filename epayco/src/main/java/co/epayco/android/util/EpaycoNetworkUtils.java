@@ -44,6 +44,18 @@ public class EpaycoNetworkUtils {
         return clientParams;
     }
 
+
+        public static RequestParams hashMapFromCLientDelete(Client client) {
+
+        RequestParams clientParams = new RequestParams();
+
+        clientParams.put("franchise", client.getFranchise());
+        clientParams.put("mask", client.getMask());
+        clientParams.put("customer_id", client.getCustomer_id());
+       
+        return clientParams;
+    }
+
     public static RequestParams hashMapFromPlan(Plan plan) {
 
         RequestParams planParams = new RequestParams();

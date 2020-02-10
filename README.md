@@ -361,6 +361,16 @@ epayco.createCashTransaction(cash, new EpaycoCallback() {
 
 ```
 
+#### List
+
+```java
+ cash.setType("redservi");
+ cash.setType("gana");
+ cash.setType("baloto"); //expiration date can not be longer than 30 days
+ cash.setType("redservi");//expiration date can not be longer than 30 days
+ cash.setType("puntored");//expiration date can not be longer than 30 days
+```
+
 #### Retrieve
 
 ```java

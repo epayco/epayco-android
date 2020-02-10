@@ -4,6 +4,9 @@ package co.epayco.android.models;
 public class Client {
 
     String tokenId, name, email, phone;
+    String franchise = null;
+    String mask = null;
+    String customer_id = null;
     Boolean defaultCard = true;
 
 
@@ -14,6 +17,9 @@ public class Client {
             String name,
             String email,
             String phone,
+            String franchise,
+            String mask,
+            String customer_id,
             Boolean defaultCard
             )
     {
@@ -64,5 +70,26 @@ public class Client {
         this.defaultCard = defaultCard;
     }
 
+    public String getFranchise() {
+        return franchise;
+    }
 
+    public void setFranchise(String franchise) {
+        this.franchise = franchise;
+    }
+    public String getMask() {
+        return mask;
+    }
+
+    public void setMask(String mask) {
+        this.mask = mask;
+    }
+
+        public String getCustomer_id() {
+        return mask;
+    }
+
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
+    }
 }

@@ -29,6 +29,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSub;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPse;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 
 public class Epayco {
 
@@ -207,6 +208,21 @@ public class Epayco {
         }
     }
 
+
+  /**
+     * delete customer token
+     * @param client    
+     * @param callback
+     */
+    public void deleteTokenCustomer(@NonNull Client client, @NonNull EpaycoCallback callback) {
+        String Base = base(false);
+        try {
+            post(Base + "/v1/remove/token", hashMapFromCLientDelete(client), apiKey, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+
+    }
 
 
     /***************************
