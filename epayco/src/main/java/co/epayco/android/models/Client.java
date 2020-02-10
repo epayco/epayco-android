@@ -4,9 +4,9 @@ package co.epayco.android.models;
 public class Client {
 
     String tokenId, name, email, phone;
-    String franchise = null;
-    String mask = null;
-    String customer_id = null;
+    String franchise;
+    String mask;
+    String customer_id;
     Boolean defaultCard = true;
 
 

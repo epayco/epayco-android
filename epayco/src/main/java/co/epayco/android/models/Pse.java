@@ -30,12 +30,12 @@ public class Pse {
     String city;
     String depto;
     String address;
-    String splitpayment = null;
-    String split_app_id  = null;
-    String split_merchant_id  = null;
-    String split_type  = null;
-    String split_primary_receiver  = null;
-    String split_primary_receiver_fee  = null;
+    String splitpayment;
+    String split_app_id;
+    String split_merchant_id;
+    String split_type;
+    String split_primary_receiver;
+    String split_primary_receiver_fee;
     String ip;
     public Pse() {}
 
