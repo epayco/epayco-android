@@ -24,7 +24,8 @@ Add the dependency
 
 ```gradle
 
- implementation 'com.github.epayco:epayco-android:v3.01'
+   implementation 'com.github.epayco:epayco-android:v3.11'
+
 
 ```
 
