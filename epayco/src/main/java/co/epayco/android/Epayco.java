@@ -30,6 +30,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPse;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 
 public class Epayco {
 
@@ -224,6 +225,19 @@ public class Epayco {
 
     }
 
+  /**
+     * add default token card exited
+     * @param client    
+     * @param callback
+     */
+    public void addTokenDefault(@NonNull Client client, @NonNull EpaycoCallback callback) {
+        String Base = base(false);
+        try {
+            post(Base + "/payment/v1/customer/reasign/card/default", hashMapFromCLientCardDefault(client), apiKey, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+    }
 
     /***************************
      * Access plan definitions *
