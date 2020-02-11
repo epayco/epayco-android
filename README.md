@@ -24,7 +24,7 @@ Add the dependency
 
 ```gradle
 
-   implementation 'com.github.epayco:epayco-android:v3.11'
+   implementation 'com.github.epayco:epayco-android:76ec6ce110'
 
 
 ```
@@ -142,6 +142,26 @@ epayco.deleteTokenCustomer(client, new EpaycoCallback() {
     public void onError(Exception error) {}
 });
 ```
+
+#### add new token default to card existed
+
+```java
+Client client = new Client();
+
+client.setCustomer_id("id_customer");
+client.setTokenId("**********zL4gFB");
+client.setFranchise("american-express");
+client.setMask("373118*****7642");
+
+epayco.addTokenDefault(client, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+
 
 ### Plans
 
