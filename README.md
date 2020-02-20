@@ -309,6 +309,7 @@ pse.setCountry("CO");
 pse.setUrlResponse("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
 pse.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
 pse.setIp("190.000.000.000");/*This is the client's IP, it is required*/
+
 //Optional
 pse.setExtra1("");
 pse.setExtra2("");
@@ -379,6 +380,7 @@ cash.setTaxBase("100000");
 cash.setPhone("3010000001");
 cash.setCurrency("COP");
 cash.setIp("190.000.000.000");/*This is the client's IP, it is required*/
+
 //Optional
 cash.setUrlResponse("");
 cash.setUrlConfirmation("");
@@ -464,6 +466,7 @@ charge.setTaxBase("100000");
 charge.setCurrency("COP");
 charge.setDues("12");
 charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
+
 //Optional
 charge.setUse_default_card_customer(true);/*if the user wants to be charged with the card that the customer currently has as default =true*/
 charge.setUrlResponse("");
