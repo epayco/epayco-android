@@ -24,7 +24,7 @@ Add the dependency
 
 ```gradle
 
-   implementation 'com.github.epayco:epayco-android:76ec6ce110'
+  implementation 'com.github.epayco:epayco-android:52243232fb'
 
 
 ```
@@ -154,6 +154,23 @@ client.setFranchise("american-express");
 client.setMask("373118*****7642");
 
 epayco.addTokenDefault(client, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+
+#### add new token to customer existed
+
+```java
+Client client = new Client();
+
+client.setTokenId("Az9wdX4Wj3JRmr9NC");
+client.setCustomer_id("id_customer");
+
+epayco.addNewToken(client, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 
