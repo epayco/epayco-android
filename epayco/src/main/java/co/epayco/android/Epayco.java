@@ -248,7 +248,7 @@ public class Epayco {
     public void addNewToken(@NonNull Client client, @NonNull EpaycoCallback callback) {
         String Base = base(false);
         try {
-            post(Base + "/v1/customer/add/token", hashMapFromCLientCardNew(client), apiKey, callback);
+            post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), apiKey, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
