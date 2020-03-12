@@ -31,6 +31,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPse;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
 
 public class Epayco {
 
@@ -234,6 +235,20 @@ public class Epayco {
         String Base = base(false);
         try {
             post(Base + "/payment/v1/customer/reasign/card/default", hashMapFromCLientCardDefault(client), apiKey, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+    }
+
+      /**
+     * add new token card
+     * @param client    
+     * @param callback
+     */
+    public void addNewToken(@NonNull Client client, @NonNull EpaycoCallback callback) {
+        String Base = base(false);
+        try {
+            post(Base + "/v1/customer/add/token", hashMapFromCLientCardNew(client), apiKey, callback);
         } catch (Exception e) {
             callback.onError(e);
         }

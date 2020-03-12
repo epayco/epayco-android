@@ -69,6 +69,15 @@ public class EpaycoNetworkUtils {
         return clientParams;
     }
 
+        public static RequestParams hashMapFromCLientCardNew(Client client) {
+
+        RequestParams clientParams = new RequestParams();
+        clientParams.put("token_card", client.getTokenId());
+        clientParams.put("customer_id", client.getCustomer_id());
+               
+        return clientParams;
+    }
+
     public static RequestParams hashMapFromPlan(Plan plan) {
 
         RequestParams planParams = new RequestParams();
