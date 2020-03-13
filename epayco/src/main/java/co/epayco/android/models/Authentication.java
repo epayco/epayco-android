@@ -4,6 +4,7 @@ import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+import co.epayco.android.util.EpaycoCallback;
 
 public class Authentication {
 
