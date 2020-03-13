@@ -56,6 +56,7 @@ public class Epayco {
         this.privateKey = auth.getPrivateKey();
         this.lang = auth.getLang();
         this.test = auth.getTest();
+        auth.AuthService(auth.getApiKey(),auth.getPrivateKey());
     }
 
     private JSONObject buildOptions() {
