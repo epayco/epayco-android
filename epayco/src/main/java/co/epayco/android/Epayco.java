@@ -102,11 +102,10 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-               // Log.d("createToken2","=>"+token_bearer);
+               // Log.d("createToken","=>"+token_bearer);
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
-                        // post(Base + "/v1/tokens", hashMapFromCard(card), apiKey, callback);
                         post(Base + "/v1/tokens", hashMapFromCard(card), token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
@@ -237,12 +236,30 @@ public class Epayco {
      * @param callback response request api
      */
     public void getCustomer(String uid, @NonNull EpaycoCallback callback) {
-        String Base = base(false);
-        try {
-            get(Base + "/payment/v1/customer/" + apiKey + "/" + uid, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                 Log.d("getCustomer","=>"+token_bearer);
+                String Base = base(false);
+                if(token_bearer2 != null){
+                    try {
+                        get(Base + "/payment/v1/customer/" + apiKey + "/" + uid,token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+
+
+          });
 
     }
 
@@ -515,7 +532,9 @@ public class Epayco {
      * @param url      url petition api
      * @param callback response request api
      */
-    public static void get(String url, @NonNull final EpaycoCallback callback) {
+    public static void get(String url,String options, @NonNull final EpaycoCallback callback) {
+        client.addHeader("Authorization",options);
+        client.addHeader("type", "sdk-jwt");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -533,6 +552,7 @@ public class Epayco {
             }
         });
     }
+    
 
     /**
      * Petition api type post
