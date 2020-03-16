@@ -317,7 +317,7 @@ public class Epayco {
      * @param client    
      * @param callback
      */
-    public void addTokenDefault(@NonNull final Client client, @ final EpaycoCallback callback) {
+    public void addTokenDefault(@NonNull final Client client, @NonNull final EpaycoCallback callback) {
          Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
 
             @Override
@@ -359,7 +359,7 @@ public class Epayco {
         String Base = base(false);
                 if(token_bearer2 != null){
         try {
-            post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
+            post(Base + "/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
