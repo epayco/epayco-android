@@ -236,7 +236,10 @@ public class Epayco {
      * @param callback response request api
      */
     public void getCustomer(String uid, @NonNull EpaycoCallback callback) {
+      
+       
         Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 String projectnumber1 = data.getString("bearer_token");
@@ -257,9 +260,7 @@ public class Epayco {
             public void onError(Exception error) {
                 Log.d("bearer_token","=>"+error);
             }
-
-
-          });
+        });
 
     }
 
@@ -530,6 +531,7 @@ public class Epayco {
     /**
      * Petition api type get
      * @param url      url petition api
+     * @param options  data user options
      * @param callback response request api
      */
     public static void get(String url,String options, @NonNull final EpaycoCallback callback) {
