@@ -236,7 +236,7 @@ public class Epayco {
      * @param callback response request api
      */
 
-    public void getCustomer(String uid, @NonNull EpaycoCallback callback) {
+    public void getCustomer(final String uid, @NonNull final EpaycoCallback callback) {
        
         Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
 
@@ -268,7 +268,7 @@ public class Epayco {
       * Return list customer
       * @param callback    response request api
      */
-    public void getCustomerList(@NonNull EpaycoCallback callback) {
+    public void getCustomerList(@NonNull final EpaycoCallback callback) {
           Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
 
             @Override
@@ -363,7 +363,7 @@ public class Epayco {
      * @param uid         id plan
      * @param callback    response request api
      */
-    public void getPlan(String uid, @NonNull EpaycoCallback callback) {
+    public void getPlan(final String uid, @NonNull final EpaycoCallback callback) {
          Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -393,7 +393,7 @@ public class Epayco {
      * Return list plan
      * @param callback    response request api
      */
-    public void getPlanList(@NonNull EpaycoCallback callback) {
+    public void getPlanList(@NonNull final EpaycoCallback callback) {
         Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -442,7 +442,7 @@ public class Epayco {
      * @param uid         id subscription
      * @param callback    response request api
      */
-    public void getSubscription(String uid, @NonNull EpaycoCallback callback) {
+    public void getSubscription(final String uid, @NonNull final EpaycoCallback callback) {
          Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -471,7 +471,7 @@ public class Epayco {
      * Get list subscription
      * @param callback    response request api
      */
-    public void getSubscriptionList(@NonNull EpaycoCallback callback) {
+    public void getSubscriptionList(@NonNull final EpaycoCallback callback) {
          Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -533,7 +533,7 @@ public class Epayco {
      * @param uid         transaction id
      * @param callback    response request api
      */
-    public void getPseTransaction(String uid, @NonNull EpaycoCallback callback) {
+    public void getPseTransaction(final String uid, @NonNull final EpaycoCallback callback) {
            Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -598,7 +598,7 @@ public class Epayco {
         }
     }
 
-    public void getReferencePayment(String uid, @NonNull EpaycoCallback callback) {
+    public void getReferencePayment(final String uid, @NonNull final EpaycoCallback callback) {
           Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
                @Override
             public void onSuccess(JSONObject data) throws JSONException {
