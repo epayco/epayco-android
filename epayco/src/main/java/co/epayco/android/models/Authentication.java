@@ -1,17 +1,30 @@
+// package co.epayco.android.models;
+// import com.loopj.android.http.RequestParams;
+// import com.loopj.android.http.*;
+// import cz.msebera.android.httpclient.Header;
+// import org.json.JSONException;
+// import org.json.JSONObject;
+// import co.epayco.android.util.EpaycoCallback;
+
 package co.epayco.android.models;
+
+import androidx.annotation.NonNull;
+
+import co.epayco.android.Epayco;
+import co.epayco.android.util.EpaycoCallback;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.*;
-import cz.msebera.android.httpclient.Header;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import co.epayco.android.util.EpaycoCallback;
 
 public class Authentication {
-
+    private static AsyncHttpClient cliente = new AsyncHttpClient();
     String apiKey;
     String privateKey;
     String lang;
-    String token_bearer;
+    String auth;
     Boolean test;
 
     public Authentication() {}
@@ -48,25 +61,35 @@ public class Authentication {
         this.test = test;
     }
 
-    public void AuthService (String apiKey, String privateKey) {
+    public String getAuth() {
+        return auth;
+    }
+    public void setAuth(String auth) {
+        this.auth = auth;
+    }
+
+
+    public Epayco AuthService (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-          return  post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey, callback);
+            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
-
+        return null;
     }
 
-public static RequestParams GetBearerToken(String apiKey, String privateKey) {
+   // public static RequestParams GetBearerToken(String apiKey, String privateKey) {
+    private RequestParams GetBearerToken(String apiKey, String privateKey) {
         {
-        RequestParams cardParams = new RequestParams();
-        cardParams.put("public_key", apiKey);
-        cardParams.put("private_key", privateKey);
-        return cardParams;
+            RequestParams cardParams = new RequestParams();
+            cardParams.put("public_key", apiKey);
+            cardParams.put("private_key", privateKey);
+            return cardParams;
         }
+    }
 
 
-            /**
+    /**
      * Petition api type post
      * @param url      url petition api
      * @param data     data send petition
@@ -74,24 +97,31 @@ public static RequestParams GetBearerToken(String apiKey, String privateKey) {
      * @param callback response request api
      */
     public static void post(String url, @NonNull RequestParams data, String options, @NonNull final EpaycoCallback callback) {
-        client.setBasicAuth(options, "");
-        client.addHeader("type", "sdk");
-        client.post(url, data, new AsyncHttpResponseHandler() {
+        cliente.setBasicAuth(options, "");
+        cliente.addHeader("type", "sdk");
+        cliente.post(url, data, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
                 try {
+                    String jsonString = new String(responseBody);
+                    JSONObject jsonObject = new JSONObject(jsonString);
+
                     JSONObject obj = new JSONObject(new String(responseBody));
-                    JSONObject data = new JSONObject(obj.getString("data"));
-                    callback.onSuccess(data);
+
+
+
+                    callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
                     callback.onError(e);
                 }
             }
+
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                 callback.onError((Exception) error);
             }
+
         });
     }
-
 }

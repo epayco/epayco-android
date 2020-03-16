@@ -46,6 +46,8 @@ public class Epayco {
     private String privateKey;
     private String lang;
     private Boolean test;
+    String token_bearer;
+    String token_bearer2;
 
     public Epayco(Authentication auth) {
         //Tiempos de respuesta modificados
@@ -56,7 +58,7 @@ public class Epayco {
         this.privateKey = auth.getPrivateKey();
         this.lang = auth.getLang();
         this.test = auth.getTest();
-        auth.AuthService(auth.getApiKey(),auth.getPrivateKey());
+      
     }
 
     private JSONObject buildOptions() {
@@ -83,13 +85,41 @@ public class Epayco {
      * @param card     data credit card
      * @param callback response request api
      */
-    public void createToken(@NonNull Card card, @NonNull EpaycoCallback callback) {
-        String Base = base(false);
-        try {
-            post(Base + "/v1/tokens", hashMapFromCard(card), apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
+    // public void createToken(@NonNull Card card, @NonNull EpaycoCallback callback) {
+    //     String Base = base(false);
+    //     try {
+    //         post(Base + "/v1/tokens", hashMapFromCard(card), apiKey, callback);
+    //     } catch (Exception e) {
+    //         callback.onError(e);
+    //     }
+    // }
+     public void createToken(@NonNull final Card card, @NonNull final EpaycoCallback callback) {
+
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+               // Log.d("createToken2","=>"+token_bearer);
+                String Base = base(false);
+                if(token_bearer2 != null){
+                    try {
+                        // post(Base + "/v1/tokens", hashMapFromCard(card), apiKey, callback);
+                        post(Base + "/v1/tokens", hashMapFromCard(card), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
+
     }
 
 
@@ -494,8 +524,9 @@ public class Epayco {
      * @param callback response request api
      */
     public static void post(String url, @NonNull RequestParams data, String options, @NonNull final EpaycoCallback callback) {
-        client.setBasicAuth(options, "");
-        client.addHeader("type", "sdk");
+        //client.setBasicAuth(options, "");
+         client.addHeader("Authorization",options);
+        client.addHeader("type", "sdk-jwt");
         client.post(url, data, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
