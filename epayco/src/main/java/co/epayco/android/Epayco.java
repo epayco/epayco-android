@@ -3,7 +3,7 @@ package co.epayco.android;
 import android.support.annotation.NonNull;
 
 import com.loopj.android.http.*;
-
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 

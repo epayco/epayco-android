@@ -7,9 +7,7 @@
 // import co.epayco.android.util.EpaycoCallback;
 
 package co.epayco.android.models;
-
-import androidx.annotation.NonNull;
-
+import android.support.annotation.NonNull;
 import co.epayco.android.Epayco;
 import co.epayco.android.util.EpaycoCallback;
 import com.loopj.android.http.AsyncHttpClient;
