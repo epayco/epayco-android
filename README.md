@@ -220,7 +220,7 @@ epayco.getPlan("reactcourse", new EpaycoCallback() {
 #### List
 
 ```java
-epayco.getCustomerList(new EpaycoCallback() {
+epayco.getPlanList(new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 

@@ -317,13 +317,29 @@ public class Epayco {
      * @param client    
      * @param callback
      */
-    public void addTokenDefault(@NonNull Client client, @NonNull EpaycoCallback callback) {
+    public void addTokenDefault(@NonNull final Client client, @ final EpaycoCallback callback) {
+         Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                 Log.d("addTokenDefault","=>"+token_bearer);
         String Base = base(false);
+                if (token_bearer2 != null) {
         try {
-            post(Base + "/payment/v1/customer/reasign/card/default", hashMapFromCLientCardDefault(client), apiKey, callback);
+            post(Base + "/payment/v1/customer/reasign/card/default", hashMapFromCLientCardDefault(client), token_bearer, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
+              }
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
     }
 
       /**
@@ -331,13 +347,31 @@ public class Epayco {
      * @param client    
      * @param callback
      */
-    public void addNewToken(@NonNull Client client, @NonNull EpaycoCallback callback) {
+    public void addNewToken(@NonNull final Client client, @NonNull final EpaycoCallback callback) {
+          Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                 Log.d("addNewToken","=>"+token_bearer);
         String Base = base(false);
+                if(token_bearer2 != null){
         try {
-            post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), apiKey, callback);
+            post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
+                }
+
+             }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
     }
 
     /***************************
