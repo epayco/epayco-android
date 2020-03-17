@@ -397,13 +397,31 @@ public class Epayco {
      * @param plan        data model plan
      * @param callback    response request api
      */
-    public void createPlan(@NonNull Plan plan, @NonNull EpaycoCallback callback) {
+
+public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                Log.d("createPlan","=>"+token_bearer);
         String Base = base(false);
-        try {
-            post(Base + "/recurring/v1/plan/create", hashMapFromPlan(plan), apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
+                if(token_bearer2 != null){
+                    try {
+                        post(Base + "/recurring/v1/plan/create", hashMapFromPlan(plan), token_bearer, callback);
+                        } catch (Exception e) {
+                         callback.onError(e);
+                         }
+                     }
         }
+
+        @Override
+        public void onError(Exception error) {
+            Log.d("bearer_token","=>"+error);
+        }
+    });
     }
 
     /**
@@ -672,31 +690,6 @@ public class Epayco {
            });
     }
 
-public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback callback) {
-        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
-
-            @Override
-            public void onSuccess(JSONObject data) throws JSONException {
-                String projectnumber1 = data.getString("bearer_token");
-                token_bearer2 = projectnumber1;
-                token_bearer = "Bearer " + projectnumber1;
-                Log.d("createPlan","=>"+token_bearer);
-        String Base = base(false);
-                if(token_bearer2 != null){
-                    try {
-                        post(Base + "/recurring/v1/plan/create", hashMapFromPlan(plan), token_bearer, callback);
-                        } catch (Exception e) {
-                         callback.onError(e);
-                         }
-                     }
-        }
-
-        @Override
-        public void onError(Exception error) {
-            Log.d("bearer_token","=>"+error);
-        }
-    });
-    }
 
 
     /*****************************
