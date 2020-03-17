@@ -681,13 +681,32 @@ public class Epayco {
      * @param charge      charge model
      * @param callback    response request api
      */
-    public void createCharge(Charge charge, @NonNull EpaycoCallback callback) {
-        String Base = base(false);
+    public void createCharge(final Charge charge, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                Log.d("createCharge","=>"+token_bearer);
+                String Base = base(false);
+                if(token_bearer2 != null){
+
         try {
-            post(Base + "/payment/v1/charge/create", hashMapFromCharge(charge), apiKey, callback);
+            post(Base + "/payment/v1/charge/create", hashMapFromCharge(charge), token_bearer, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
+
+    }
+}
+
+    @Override
+    public void onError(Exception error) {
+        Log.d("bearer_token","=>"+error);
+    }
+    });
     }
 
     /***************
