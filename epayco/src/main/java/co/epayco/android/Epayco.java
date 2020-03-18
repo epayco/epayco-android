@@ -494,13 +494,30 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param sub         data model subscription
      * @param callback    response request api
      */
-    public void createSubscription(Subscription sub, @NonNull EpaycoCallback callback) {
-        String Base = base(false);
-        try {
-            post(Base + "/recurring/v1/subscription/create", hashMapFromSub(sub), apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
+    public void createSubscription(final Subscription sub, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                Log.d("createSubscription","=>"+token_bearer);
+             String Base = base(false);
+                if(token_bearer2 != null) {
+                    try {
+                        post(Base + "/recurring/v1/subscription/create", hashMapFromSub(sub), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+    }
+
+    @Override
+    public void onError(Exception error) {
+        Log.d("bearer_token","=>"+error);
+    }
+});
     }
 
     /**
@@ -567,13 +584,28 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param sub         data model charge subscription
      * @param callback    response request api
      */
-    public void chargeSubscription(ChargeSub sub, @NonNull EpaycoCallback callback) {
+      public void chargeSubscription(final ChargeSub sub, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                Log.d("chargeSubscription","=>"+token_bearer);
         String Base = base(false);
-        try {
-            post(Base + "/payment/v1/charge/subscription/create", hashMapFromSubCharge(sub), apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
+                if(token_bearer2 != null) {
+                    try {
+                        post(Base + "/payment/v1/charge/subscription/create", hashMapFromSubCharge(sub), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+    }
+    @Override
+    public void onError(Exception error) {
+        Log.d("bearer_token","=>"+error);
+    }
+});
     }
 
     /***************************

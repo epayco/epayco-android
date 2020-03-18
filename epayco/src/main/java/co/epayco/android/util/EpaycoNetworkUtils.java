@@ -101,7 +101,9 @@ public class EpaycoNetworkUtils {
         subscriptionParams.put("id_plan", subscription.getIdPlan());
         subscriptionParams.put("customer", subscription.getCustomer());
         subscriptionParams.put("token_card", subscription.getTokenCard());
-         subscriptionParams.put("url_confirmation", subscription.getUrlConfirmation());
+        subscriptionParams.put("url_confirmation", subscription.getUrlConfirmation());
+        subscriptionParams.put("doc_type", subscription.getDoc_type());
+        subscriptionParams.put("doc_number", subscription.getDoc_number());
 
         return subscriptionParams;
     }
