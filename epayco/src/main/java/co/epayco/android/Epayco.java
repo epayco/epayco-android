@@ -666,34 +666,48 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param cash        data cash model
      * @param callback    response request api
      */
-    public void createCashTransaction(Cash cash, @NonNull EpaycoCallback callback) {
-        String Base = base(true), url = null;
+        public void createCashTransaction(final Cash cash, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                Log.d("createCashTransaction", "=>" + token_bearer);
+                String Base = base(true), url = null;
 
-        switch (cash.getType()) {
-            case "efecty":
-                url = "/restpagos/v2/efectivo/efecty";
-                break;
-            case "baloto":
-                url = "/restpagos/v2/efectivo/baloto";
-                break;
-            case "gana":
-                url = "/restpagos/v2/efectivo/gana";
-                break;
-            case "redservi":
-                url = "/restpagos/v2/efectivo/redservi";
-                break;
-            case "puntored":
-                url = "/restpagos/v2/efectivo/puntored";
-                break;
-            default:
-                System.out.println("error payment");
-        }
-
-        try {
-            post(Base + url, hashMapFromCash(cash, buildOptions()), apiKey, callback);
-        } catch (Exception e) {
-            callback.onError(e);
-        }
+                switch (cash.getType()) {
+                    case "efecty":
+                        url = "/restpagos/v2/efectivo/efecty";
+                        break;
+                    case "baloto":
+                        url = "/restpagos/v2/efectivo/baloto";
+                        break;
+                    case "gana":
+                        url = "/restpagos/v2/efectivo/gana";
+                        break;
+                    case "redservi":
+                        url = "/restpagos/v2/efectivo/redservi";
+                        break;
+                    case "puntored":
+                        url = "/restpagos/v2/efectivo/puntored";
+                        break;
+                    default:
+                        System.out.println("error payment");
+                }
+                if(token_bearer2 != null){
+                try {
+                    post(Base + url, hashMapFromCash(cash, buildOptions()), token_bearer, callback);
+                } catch (Exception e) {
+                    callback.onError(e);
+                }
+            }
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
     }
 
     public void getReferencePayment(final String uid, @NonNull final EpaycoCallback callback) {

@@ -239,6 +239,8 @@ Subscription subscription = new Subscription();
 subscription.setTokenCard("id_token");
 subscription.setCustomer("id_customer");
 subscription.setIdPlan("reactcourse");
+subscription.setDoc_type("CC");
+subscription.setDoc_number("5234567");
 /*Optional parameter: if these parameter it's not send, system get ePayco dashboard's url_confirmation*/
 subscription.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php");
 
