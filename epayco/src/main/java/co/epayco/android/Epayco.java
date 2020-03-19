@@ -245,7 +245,7 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getCustomer","=>"+token_bearer);
+                // Log.d("getCustomer","=>"+token_bearer);
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
@@ -276,7 +276,7 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getCustomerList","=>"+token_bearer);
+               //  Log.d("getCustomerList","=>"+token_bearer);
                 String Base = base(false);
                if(token_bearer2 != null){
                     try {
@@ -310,7 +310,7 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("deleteTokenCustomer", "=>" + token_bearer);
+             //   Log.d("deleteTokenCustomer", "=>" + token_bearer);
                 String Base = base(false);
                 if (token_bearer2 != null) {
                     try {
@@ -341,7 +341,7 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("addTokenDefault", "=>" + token_bearer);
+              //  Log.d("addTokenDefault", "=>" + token_bearer);
                 String Base = base(false);
                 if (token_bearer2 != null) {
                     try {
@@ -370,7 +370,7 @@ public class Epayco {
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("addNewToken","=>"+token_bearer);
+              //   Log.d("addNewToken","=>"+token_bearer);
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
@@ -406,7 +406,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("createPlan","=>"+token_bearer);
+            //    Log.d("createPlan","=>"+token_bearer);
         String Base = base(false);
                 if(token_bearer2 != null){
                     try {
@@ -436,7 +436,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getPlan","=>"+token_bearer);
+              //   Log.d("getPlan","=>"+token_bearer);
                 String Base = base(false);
                    if(token_bearer2 != null){
                     try {
@@ -466,7 +466,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getPlanList","=>"+token_bearer);
+             //    Log.d("getPlanList","=>"+token_bearer);
         String Base = base(false);
          if(token_bearer2 != null){
         try {
@@ -502,7 +502,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("createSubscription","=>"+token_bearer);
+             //   Log.d("createSubscription","=>"+token_bearer);
              String Base = base(false);
                 if(token_bearer2 != null) {
                     try {
@@ -532,7 +532,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getSubscription","=>"+token_bearer);
+             //    Log.d("getSubscription","=>"+token_bearer);
                  String Base = base(false);
                if(token_bearer2 != null){
             try {
@@ -561,7 +561,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getSubscriptionList","=>"+token_bearer);
+             //    Log.d("getSubscriptionList","=>"+token_bearer);
         String Base = base(false);
                 if(token_bearer2 != null){
              try {
@@ -591,7 +591,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("chargeSubscription","=>"+token_bearer);
+           //     Log.d("chargeSubscription","=>"+token_bearer);
         String Base = base(false);
                 if(token_bearer2 != null) {
                     try {
@@ -624,7 +624,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("createPseTransaction","=>"+token_bearer);
+           //     Log.d("createPseTransaction","=>"+token_bearer);
         String Base = base(true);
                 if(token_bearer2 != null) {
         try {
@@ -653,7 +653,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getPseTransaction","=>"+token_bearer);
+            //     Log.d("getPseTransaction","=>"+token_bearer);
         String Base = base(true);
               if(token_bearer2 != null){
                 try {
@@ -688,7 +688,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("createCashTransaction", "=>" + token_bearer);
+              //  Log.d("createCashTransaction", "=>" + token_bearer);
                 String Base = base(true), url = null;
 
                 switch (cash.getType()) {
@@ -732,7 +732,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                   String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                 Log.d("getPseTransaction","=>"+token_bearer);
+            //     Log.d("getPseTransaction","=>"+token_bearer);
         String Base = base(true);
                if(token_bearer2 != null){
                      try {
@@ -770,7 +770,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String projectnumber1 = data.getString("bearer_token");
                 token_bearer2 = projectnumber1;
                 token_bearer = "Bearer " + projectnumber1;
-                Log.d("createCharge","=>"+token_bearer);
+           //     Log.d("createCharge","=>"+token_bearer);
                 String Base = base(false);
                 if(token_bearer2 != null){
 
