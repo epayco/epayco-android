@@ -707,6 +707,9 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                     case "puntored":
                         url = "/restpagos/v2/efectivo/puntored";
                         break;
+                    case "sured":
+                        url = "/restpagos/v2/efectivo/sured";
+                        break;
                     default:
                         System.out.println("error payment");
                 }
