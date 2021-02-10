@@ -213,13 +213,16 @@ public class EpaycoNetworkUtils {
         pseParams.put("extra3", encrypt(pse.getExtra3(), secretKey));
         pseParams.put("ciudad", encrypt(pse.getCity(), secretKey));
         pseParams.put("depto", encrypt(pse.getDepto(), secretKey));
-        pseParams.put("splitpayment", encrypt(pse.getSplitpayment(),secretKey));
-        pseParams.put("split_app_id", encrypt(pse.getSplit_app_id(),secretKey));
-        pseParams.put("split_merchant_id", encrypt(pse.getSplit_merchant_id(),secretKey));
-        pseParams.put("split_type", encrypt(pse.getSplit_type(),secretKey));
-        pseParams.put("split_primary_receiver", encrypt(pse.getSplit_primary_receiver(),secretKey));
-        pseParams.put("split_primary_receiver_fee", encrypt(pse.getSplit_primary_receiver_fee(),secretKey));
+        if (pse.getSplitpayment()==null ){
 
+        }else{
+            pseParams.put("splitpayment", encrypt(pse.getSplitpayment(),secretKey));
+            pseParams.put("split_app_id", encrypt(pse.getSplit_app_id(),secretKey));
+            pseParams.put("split_merchant_id", encrypt(pse.getSplit_merchant_id(),secretKey));
+            pseParams.put("split_type", encrypt(pse.getSplit_type(),secretKey));
+            pseParams.put("split_primary_receiver", encrypt(pse.getSplit_primary_receiver(),secretKey));
+            pseParams.put("split_primary_receiver_fee", encrypt(pse.getSplit_primary_receiver_fee(),secretKey));
+        }
         //System
         pseParams.put("enpruebas", encrypt(new String(test).toUpperCase(), secretKey));
         pseParams.put("i", generateI());
