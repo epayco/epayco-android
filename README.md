@@ -349,7 +349,7 @@ epayco.createPseTransaction(pse, new EpaycoCallback() {
 #### Retrieve
 
 ```java
-epayco.getPseTransaction("transaction_id", new EpaycoCallback() {
+epayco.getPseTransaction("codigo_recibo", new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 
