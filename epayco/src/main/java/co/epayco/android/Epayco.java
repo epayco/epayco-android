@@ -40,7 +40,7 @@ public class Epayco {
     private static final String BASE_URL = "https://api.secure.payco.co";
     private static final String BASE_URL_SECURE = "https://secure.payco.co";
 
-    private static final int MAX_TIME_OUT= 190*1000;
+    private static final int MAX_TIME_OUT= 190*10000;
 
     private String apiKey;
     private String privateKey;
