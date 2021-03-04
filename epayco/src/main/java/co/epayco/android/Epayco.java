@@ -834,15 +834,15 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      */
     public static void post(String url, @NonNull RequestParams data, String options, @NonNull final EpaycoCallback callback) {
         //client.setBasicAuth(options, "");
-         client.addHeader("Authorization",options);
+        client.addHeader("Authorization",options);
         client.addHeader("type", "sdk-jwt");
         client.post(url, data, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
-                    JSONObject data = new JSONObject(obj.getString("data"));
-                    callback.onSuccess(data);
+                    //JSONObject data = new JSONObject(obj.getString("data"));
+                    callback.onSuccess(obj);
                 } catch (JSONException e) {
                     callback.onError(e);
                 }
