@@ -302,6 +302,25 @@ epayco.chargeSubscription(sub, new EpaycoCallback() {
 
 ### PSE
 
+#### Listar bancos
+
+```java
+   epayco.getBanks(object : EpaycoCallback {
+     @Throws(JSONException::class)
+     override fun onSuccess(data: JSONObject) {
+        
+        val TextView = findViewById<View>(R.id.textView2 as TextView
+        textView.text = data.toString()
+        System.out.println(data)
+     }
+     override fun onError(error: Exception) {
+        
+        System.out.println("Error")
+        System.out.println("Exception")
+     }
+   })
+```
+
 #### Create
 
 ```java
