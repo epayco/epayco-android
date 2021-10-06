@@ -349,6 +349,7 @@ pse.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php
 pse.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+pse.setIco("0");
 pse.setExtra1("");
 pse.setExtra2("");
 pse.setExtra3("");
@@ -403,11 +404,6 @@ Cash cash = new Cash();
 //Schema
 cash.setType("efecty");
 cash.setEndDate("2017-12-05");
-
-//Required
-cash.setDocType("CC");
-cash.setDocNumber("1035851980");
-cash.setName("John");
 cash.setLastName("Doe");
 cash.setEmail("example@email.com");
 cash.setInvoice("OR-1234");
@@ -420,6 +416,7 @@ cash.setCurrency("COP");
 cash.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+cash.setIco("0");
 cash.setUrlResponse("");
 cash.setUrlConfirmation("");
 cash.setExtra1("");
@@ -506,6 +503,7 @@ charge.setDues("12");
 charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+charge.setIco("0");
 charge.setUse_default_card_customer(true);/*if the user wants to be charged with the card that the customer currently has as default =true*/
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");

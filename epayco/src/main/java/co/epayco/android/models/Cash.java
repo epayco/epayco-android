@@ -23,6 +23,7 @@ public class Cash {
     String ip;
 
     //Optional
+    String ico;
     String urlResponse;
     String urlConfirmation;
     String extra1;
@@ -128,6 +129,14 @@ public class Cash {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public String setIco(String ico){
+        this.ico = ico;
     }
 
     public String getPhone() {
