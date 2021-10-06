@@ -24,6 +24,7 @@ public class Pse {
     String country;
 
     //Optional
+    String ico;
     String extra1;
     String extra2;
     String extra3;
@@ -125,6 +126,14 @@ public class Pse {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public String setIco(String ico){
+        this.ico = ico;
     }
 
     public String getPhone() {

@@ -147,6 +147,7 @@ public class EpaycoNetworkUtils {
         chargeParams.put("ip", charge.getIp());
 
         //Optional
+        chargeParams.put("ico", charge.getIco());
         chargeParams.put("use_default_card_customer", charge.getUse_default_card_customer());
         chargeParams.put("url_response", charge.getUrlResponse());
         chargeParams.put("url_confirmation", charge.getUrlConfirmation());
@@ -206,6 +207,7 @@ public class EpaycoNetworkUtils {
         pseParams.put("ip", encrypt(pse.getIp(), secretKey));
 
         //Optional
+        pseParams.put("ico", encrypt(pse.getIco(), secretKey));
         pseParams.put("metodoconfirmacion", encrypt("GET", secretKey));
         pseParams.put("direccion", encrypt(pse.getAddress(), secretKey));
         pseParams.put("extra1", encrypt(pse.getExtra1(), secretKey));
@@ -264,6 +266,7 @@ public class EpaycoNetworkUtils {
         cashParams.put("ip", cash.getIp());
 
         //Optional
+        cashParams.put("ico", cash.getIco());
         cashParams.put("url_respuesta", cash.getUrlResponse());
         cashParams.put("url_confirmacion", cash.getUrlConfirmation());
         cashParams.put("extra1", cash.getExtra1());

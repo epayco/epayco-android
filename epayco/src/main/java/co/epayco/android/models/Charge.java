@@ -22,6 +22,7 @@ public class Charge {
     String dues;
     String ip;
     //Optional
+    String ico;
     Boolean use_default_card_customer;
     String urlResponse;
     String urlConfirmation;
@@ -127,6 +128,14 @@ public class Charge {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public String setIco(String ico){
+        this.ico = ico;
     }
 
     public String getTaxBase() {
