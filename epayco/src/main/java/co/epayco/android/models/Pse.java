@@ -132,7 +132,7 @@ public class Pse {
         return ico;
     }
 
-    public String setIco(String ico){
+    public void setIco(String ico){
         this.ico = ico;
     }
 
