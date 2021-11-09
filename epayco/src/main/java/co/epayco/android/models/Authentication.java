@@ -69,7 +69,7 @@ public class Authentication {
 
     public Epayco AuthService (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey, callback);
+            post("https://api.secure.epayco.xyz/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey, callback);
         } catch (Exception e) {
             callback.onError(e);
         }

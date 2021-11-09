@@ -37,8 +37,8 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    private static final String BASE_URL = "https://api.secure.payco.co";
-    private static final String BASE_URL_SECURE = "https://secure.payco.co";
+    private static final String BASE_URL = "https://api.secure.epayco.xyz";
+    private static final String BASE_URL_SECURE = "https://secure2.epayco.io/restpagostest";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -374,7 +374,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
-                        post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
+                        post(Base + "/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -453,6 +453,32 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
             }
 
           });
+    }
+
+    public void deletePlan(final String uid, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                //   Log.d("getPlan","=>"+token_bearer);
+                String Base = base(false);
+                if(token_bearer2 != null){
+                    try {
+                        post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid, null, token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+
+        });
     }
 
     /**
@@ -628,7 +654,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
         String Base = base(true);
                 if(token_bearer2 != null) {
         try {
-            post(Base + "/restpagos/pagos/debitos.json", hashMapFromPse(pse, buildOptions()), token_bearer, callback);
+            post(Base + "/pagos/debitos.json", hashMapFromPse(pse, buildOptions()), token_bearer, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -657,7 +683,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
         String Base = base(true);
               if(token_bearer2 != null){
                 try {
-                    get(Base + "/restpagos/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey, token_bearer,callback);
+                    get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey, token_bearer,callback);
                     } catch (Exception e) {
                  callback.onError(e);
                  }
@@ -686,7 +712,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                         
                 if(token_bearer2 != null) {
                     try {
-                        get(Base + "/restpagos/pse/bancos.json?public_key=" + apiKey, token_bearer, callback);
+                        get(Base + "/pse/bancos.json?public_key=" + apiKey +"&test="+test, token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -721,22 +747,22 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
 
                 switch (cash.getType()) {
                     case "efecty":
-                        url = "/restpagos/v2/efectivo/efecty";
+                        url = "/v2/efectivo/efecty";
                         break;
                     case "baloto":
-                        url = "/restpagos/v2/efectivo/baloto";
+                        url = "/v2/efectivo/baloto";
                         break;
                     case "gana":
-                        url = "/restpagos/v2/efectivo/gana";
+                        url = "/v2/efectivo/gana";
                         break;
                     case "redservi":
-                        url = "/restpagos/v2/efectivo/redservi";
+                        url = "/v2/efectivo/redservi";
                         break;
                     case "puntored":
-                        url = "/restpagos/v2/efectivo/puntored";
+                        url = "/v2/efectivo/puntored";
                         break;
                     case "sured":
-                        url = "/restpagos/v2/efectivo/sured";
+                        url = "/v2/efectivo/sured";
                         break;
                     default:
                         System.out.println("error payment");
@@ -767,7 +793,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
         String Base = base(true);
                if(token_bearer2 != null){
                      try {
-                         get(Base + "/restpagos/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey,token_bearer, callback);
+                         get(Base + "/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey,token_bearer, callback);
                         } catch (Exception e) {
                          callback.onError(e);
                         }

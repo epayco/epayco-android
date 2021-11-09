@@ -135,7 +135,7 @@ public class Cash {
         return ico;
     }
 
-    public String setIco(String ico){
+    public void setIco(String ico){
         this.ico = ico;
     }
 
