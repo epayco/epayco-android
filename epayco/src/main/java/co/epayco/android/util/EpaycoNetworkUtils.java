@@ -373,6 +373,10 @@ public class EpaycoNetworkUtils {
         return safetypayParams;
     }
 
+    public static RequestParams hashMapFromEmpty() {
+        RequestParams emptyParams = new RequestParams();
+        return emptyParams;
+    }
 
     public static String encrypt(String value, String key) {
         String cryptText = null, keyString = ((value == null) ? "N/A" : value);

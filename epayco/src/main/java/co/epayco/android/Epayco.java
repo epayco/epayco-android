@@ -38,6 +38,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplata;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromEmpty;
 
 public class Epayco {
 
@@ -473,7 +474,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
-                        post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid, null, token_bearer, callback);
+                        post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid,  hashMapFromEmpty(), token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -719,7 +720,8 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                         
                 if(token_bearer2 != null) {
                     try {
-                        get(Base + "/restpagos/pse/bancos.json?public_key=" + apiKey, token_bearer, callback);
+                        String testStr = apiKey + "&test=" + String.valueOf(test).toUpperCase();
+                        get(Base + "/restpagos/pse/bancos.json?public_key=" + testStr, token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
