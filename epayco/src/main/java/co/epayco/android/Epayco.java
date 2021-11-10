@@ -713,7 +713,13 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                         
                 if(token_bearer2 != null) {
                     try {
-                        String testStr = apiKey + "&test=" + String.valueOf(test).toUpperCase();
+                        String strTest = "";
+                        if(test){
+                            strTest= "1";
+                        }else{
+                            strTest= "2";
+                        }
+                        String testStr = apiKey + "&test=" + strTest;
                         get(Base + "/pse/bancos.json?public_key=" + testStr, token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
