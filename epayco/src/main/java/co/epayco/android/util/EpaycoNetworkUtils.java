@@ -12,8 +12,11 @@ import co.epayco.android.models.Cash;
 import co.epayco.android.models.Charge;
 import co.epayco.android.models.ChargeSub;
 import co.epayco.android.models.Client;
+import co.epayco.android.models.Daviplata;
+import co.epayco.android.models.DaviplataConfirm;
 import co.epayco.android.models.Plan;
 import co.epayco.android.models.Pse;
+import co.epayco.android.models.Safetypay;
 import co.epayco.android.models.Subscription;
 
 public class EpaycoNetworkUtils {
@@ -286,6 +289,85 @@ public class EpaycoNetworkUtils {
         cashParams.put("lenguaje", "android");
 
         return cashParams;
+    }
+
+    public static RequestParams hashMapFromDaviplata(Daviplata daviplata) {
+
+        RequestParams daviplataParams = new RequestParams();
+
+        //Required
+        daviplataParams.put("docType", daviplata.getDocType());
+        daviplataParams.put("document", daviplata.getDocument());
+        daviplataParams.put("name", daviplata.getName());
+        daviplataParams.put("indCountry", daviplata.getIndCountry());
+        daviplataParams.put("city", daviplata.getCity());
+        daviplataParams.put("address", daviplata.getAddress());
+        daviplataParams.put("value", daviplata.getValue());
+
+        //Optional
+        daviplataParams.put("lastName", daviplata.getLastName());
+        daviplataParams.put("email", daviplata.getEmail());
+        daviplataParams.put("phone", daviplata.getPhone());
+        daviplataParams.put("country", daviplata.getCountry());
+        daviplataParams.put("ip", daviplata.getIp());
+        daviplataParams.put("currency", daviplata.getCurrency());
+        daviplataParams.put("invoice", daviplata.getInvoice());
+        daviplataParams.put("description", daviplata.getDescription());
+        daviplataParams.put("tax", daviplata.getTax());
+        daviplataParams.put("taxBase", daviplata.getTaxBase());
+        daviplataParams.put("ico", daviplata.getIco());
+        daviplataParams.put("testMode", daviplata.getTestMode());
+        daviplataParams.put("urlResponse", daviplata.getUrlResponse());
+        daviplataParams.put("urlConfirmation", daviplata.getUrlConfirmation());
+        daviplataParams.put("methodConfirmation", daviplata.getMethodConfirmation());
+        return daviplataParams;
+    }
+
+    public static RequestParams hashMapFromDaviplataConfirm(DaviplataConfirm daviplata) {
+
+        RequestParams daviplataParams = new RequestParams();
+
+        //Required
+        daviplataParams.put("refPayco", daviplata.getRefPayco());
+        daviplataParams.put("idSessionToken", daviplata.getIdSessionToken());
+        daviplataParams.put("otp", daviplata.getOtp());
+        return daviplataParams;
+    }
+
+    public static RequestParams hashMapFromSafetypay(Safetypay safetypay) {
+
+        RequestParams safetypayParams = new RequestParams();
+
+        //Required
+        safetypayParams.put("cash", safetypay.getCash());
+        safetypayParams.put("expirationDate", safetypay.getEndDate());
+        safetypayParams.put("docType", safetypay.getDocType());
+        safetypayParams.put("document", safetypay.getDocument());
+        safetypayParams.put("name", safetypay.getName());
+        safetypayParams.put("indCountry", safetypay.getIndCountry());
+        safetypayParams.put("city", safetypay.getCity());
+        safetypayParams.put("address", safetypay.getAddress());
+        safetypayParams.put("value", safetypay.getValue());
+
+        //Optional
+        safetypayParams.put("lastName", safetypay.getLastName());
+        safetypayParams.put("email", safetypay.getEmail());
+        safetypayParams.put("phone", safetypay.getPhone());
+        safetypayParams.put("country", safetypay.getCountry());
+        safetypayParams.put("ip", safetypay.getIp());
+        safetypayParams.put("currency", safetypay.getCurrency());
+        safetypayParams.put("invoice", safetypay.getInvoice());
+        safetypayParams.put("description", safetypay.getDescription());
+        safetypayParams.put("tax", safetypay.getTax());
+        safetypayParams.put("taxBase", safetypay.getTaxBase());
+        safetypayParams.put("ico", safetypay.getIco());
+        safetypayParams.put("testMode", safetypay.getTestMode());
+        safetypayParams.put("urlResponse", safetypay.getUrlResponse());
+        safetypayParams.put("urlResponsePointer", safetypay.getUrlResponsePointer());
+        safetypayParams.put("urlConfirmation", safetypay.getUrlConfirmation());
+        safetypayParams.put("methodConfirmation", safetypay.getMethodConfirmation());
+        safetypayParams.put("typeIntegration", safetypay.getTypeIntegration());
+        return safetypayParams;
     }
 
 
