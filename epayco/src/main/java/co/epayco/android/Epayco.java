@@ -13,8 +13,11 @@ import co.epayco.android.models.Cash;
 import co.epayco.android.models.Charge;
 import co.epayco.android.models.ChargeSub;
 import co.epayco.android.models.Client;
+import co.epayco.android.models.Daviplata;
+import co.epayco.android.models.DaviplataConfirm;
 import co.epayco.android.models.Plan;
 import co.epayco.android.models.Pse;
+import co.epayco.android.models.Safetypay;
 import co.epayco.android.models.Subscription;
 import co.epayco.android.util.DateUtils;
 import co.epayco.android.util.EpaycoCallback;
@@ -24,7 +27,9 @@ import cz.msebera.android.httpclient.Header;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLient;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCard;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCash;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplataConfirm;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPlan;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSafetypay;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSub;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPse;
@@ -32,6 +37,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplata;
 
 public class Epayco {
 
@@ -39,6 +45,7 @@ public class Epayco {
 
     private static final String BASE_URL = "https://api.secure.payco.co";
     private static final String BASE_URL_SECURE = "https://secure.payco.co";
+    private static final String BASE_URL_APIFY = "https://apify.epayco.co";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -820,6 +827,106 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
     }
     });
     }
+
+    /*****************************
+     * Access davioplata definitions *
+     *****************************/
+    /**
+     * Create daviplata transaction
+     * @param daviplata   Daviplata model
+     * @param callback    response request api
+     */
+    public void createDaviplata(final Daviplata daviplata, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                if(token_bearer2 != null){
+
+                    try {
+                        post(BASE_URL_APIFY + "/payment/process/daviplata", hashMapFromDaviplata(daviplata), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
+    }
+
+    /**
+     * Confirm daviplata transaction
+     * @param confirm DaviplatfConfirma model
+     * @param callback    response request api
+     */
+    public void confirmDaviplata(final DaviplataConfirm confirm, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                if(token_bearer2 != null){
+
+                    try {
+                        post(BASE_URL_APIFY + "/payment/confirm/daviplata", hashMapFromDaviplataConfirm(confirm), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
+    }
+
+    /*****************************
+     * Access safetypay definitions *
+     *****************************/
+    /**
+     * Create safetypay transaction
+     * @param safetypay   Safetypay model
+     * @param callback    response request api
+     */
+    public void createSafetypay(final Safetypay safetypay, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                if(token_bearer2 != null){
+
+                    try {
+                        post(BASE_URL_APIFY + "/payment/process/safetypay", hashMapFromSafetypay(safetypay), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+        });
+    }
+
 
     /***************
      * Definitions *
