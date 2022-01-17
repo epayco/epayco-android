@@ -108,7 +108,7 @@ public class Authentication {
      * @param options  data user options
      * @param callback response request api
      */
-    public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify @NonNull final EpaycoCallback callback) {
+    public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify, @NonNull final EpaycoCallback callback) {
         
         if(isApi){
             client.addHeader("Authorization", options);
