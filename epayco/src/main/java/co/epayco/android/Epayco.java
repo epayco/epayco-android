@@ -809,21 +809,18 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param callback    response request api
      */
     public void createDaviplata(final Daviplata daviplata, @NonNull final EpaycoCallback callback) {
-        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        Epayco epayco = new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
 
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                String projectnumber1 = data.getString("bearer_token");
-                token_bearer2 = projectnumber1;
-                token_bearer = "Bearer " + projectnumber1;
-                if(token_bearer2 != null){
-
+                String token = data.getString("token");
+                token_bearer = "Bearer " + token;
+                if(token != null){
                     try {
                         post(BASE_URL_APIFY + "/payment/process/daviplata", hashMapFromDaviplata(daviplata), token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
-
                 }
             }
 
@@ -840,14 +837,13 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param callback    response request api
      */
     public void confirmDaviplata(final DaviplataConfirm confirm, @NonNull final EpaycoCallback callback) {
-        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        Epayco epayco = new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
 
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                String projectnumber1 = data.getString("bearer_token");
-                token_bearer2 = projectnumber1;
-                token_bearer = "Bearer " + projectnumber1;
-                if(token_bearer2 != null){
+                String token = data.getString("token");
+                token_bearer = "Bearer " + token;
+                if(token != null){
 
                     try {
                         post(BASE_URL_APIFY + "/payment/confirm/daviplata", hashMapFromDaviplataConfirm(confirm), token_bearer, callback);
@@ -874,14 +870,13 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param callback    response request api
      */
     public void createSafetypay(final Safetypay safetypay, @NonNull final EpaycoCallback callback) {
-        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        Epayco epayco = new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
 
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                String projectnumber1 = data.getString("bearer_token");
-                token_bearer2 = projectnumber1;
-                token_bearer = "Bearer " + projectnumber1;
-                if(token_bearer2 != null){
+                String token = data.getString("token");
+                token_bearer = "Bearer " + token;
+                if(token != null){
 
                     try {
                         post(BASE_URL_APIFY + "/payment/process/safetypay", hashMapFromSafetypay(safetypay), token_bearer, callback);
