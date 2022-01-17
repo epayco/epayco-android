@@ -79,7 +79,7 @@ public class Authentication {
 
     public Epayco AuthServiceApify (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            String basic = apiKey+":"+private_key;
+            String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
 
@@ -110,8 +110,8 @@ public class Authentication {
      */
     public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify, @NonNull final EpaycoCallback callback) {
         
-        if(isApi){
-            client.addHeader("Authorization", options);
+        if(isApify){
+            cliente.addHeader("Authorization", options);
         }else{
             cliente.setBasicAuth(options, "");
         }
