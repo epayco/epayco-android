@@ -79,7 +79,7 @@ public class Authentication {
 
     public Epayco AuthServiceApify (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            String basic = apiKey+":"+private_key;
+            String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
 
