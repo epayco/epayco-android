@@ -81,9 +81,10 @@ public class Authentication {
         try {
             String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
-            String token = new String(encoded);
+            String tokenizer = new String(encoded);
+            String token = "Basic " + tokenizer;
             System.out.println("voy a pedir el token a apify");
-            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
+            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
