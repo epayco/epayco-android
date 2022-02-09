@@ -79,11 +79,11 @@ public class Authentication {
 
     public Epayco AuthServiceApify (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            String basic = apiKey+":"+privateKey;
+            String basic = apiKey+":"+private_key;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
 
-            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), token, true, callback);
+            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), "Basic" + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
