@@ -145,6 +145,12 @@ public class Authentication {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                System.out.println(("estoy en el onFailure \n"));
+                System.out.println(" \n");
+                System.out.println(headers);
+                System.out.println(" \n");
+                System.out.println(new String(responseBody));
+                System.out.println(" \n");
                 callback.onError((Exception) error);
             }
 
