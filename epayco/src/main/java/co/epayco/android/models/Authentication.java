@@ -84,7 +84,7 @@ public class Authentication {
             String tokenizer = new String(encoded);
             String token = "Basic " + tokenizer;
             System.out.println("voy a pedir el token a apify");
-            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), token, true, callback);
+            post("https://apify.epayco.io/login", new RequestParams(), token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -113,13 +113,16 @@ public class Authentication {
         
         if(isApify){
             System.out.println("entro al if isApify \n");
-            System.out.println(options);
+            System.out.println("inicio-"+options+"-fin \n");
             cliente.addHeader("Authorization", options);
         }else{
             cliente.setBasicAuth(options, "");
         }
 
         cliente.addHeader("type", "sdk");
+        System.out.println(data.toString());
+        System.out.println(cliente.toString());
+
         cliente.post(url, data, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
