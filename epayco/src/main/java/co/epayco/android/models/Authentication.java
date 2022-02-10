@@ -126,13 +126,19 @@ public class Authentication {
 
                 try {
                     String jsonString = new String(responseBody);
+                    System.out.println("jsonString \n");
+                    System.out.println(jsonString);
                     JSONObject jsonObject = new JSONObject(jsonString);
-
+                    System.out.println("jsonObject \n");
+                    System.out.println(jsonObject);
                     JSONObject obj = new JSONObject(new String(responseBody));
+                    System.out.println("obj \n");
                     System.out.println(obj);
 
                     callback.onSuccess(obj);
                 } catch (JSONException e) {
+                    System.out.println("catch => \n");
+                    System.out.println(e);
                     callback.onError(e);
                 }
             }
