@@ -113,14 +113,14 @@ public class Authentication {
         
         if(isApify){
             System.out.println("entro al if isApify \n");
-            System.out.println("inicio-"+options+"-fin \n");
-            cliente.addHeader("Authorization", options);
+            System.out.println("inicio-"+options.replace("\n", "")+"-fin \n");
+            cliente.addHeader("Authorization", options.replace("\n", ""));
         }else{
             cliente.setBasicAuth(options, "");
         }
 
         cliente.addHeader("type", "sdk");
-        System.out.println(data.toString());
+        System.out.println("data= " + data.toString());
         System.out.println(cliente.toString());
 
         cliente.post(url, data, new AsyncHttpResponseHandler() {
