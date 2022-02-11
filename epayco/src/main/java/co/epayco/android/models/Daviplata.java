@@ -13,7 +13,7 @@ public class Daviplata {
 
     String lastName;
     String email;
-    Integer phone;
+    String phone;
     String country;
     String ip;
     String currency;
@@ -99,11 +99,11 @@ public class Daviplata {
         this.email = email;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
