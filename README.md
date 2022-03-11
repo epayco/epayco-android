@@ -550,3 +550,63 @@ Charge charge = new Charge();
                 charge.setSplit_primary_receiver_fee ("10");
 
 ```
+
+### Daviplata
+
+#### Create
+
+```java
+
+Daviplata daviplata = new Daviplata();
+
+daviplata.setDocType("CC");
+daviplata.setDocument("1035851980");
+daviplata.setName("Jhon");
+daviplata.setIndCountry("57");
+daviplata.setCity("Bogota");
+daviplata.setAddress("av principal");
+daviplata.setValue("100");
+daviplata.setIp("190.000.000.000");
+
+// optional
+daviplata.setLastName("Doe");
+daviplata.setEmail("example@email.com");
+daviplata.setPhone("3010000001");
+daviplata.setCountry("CO");
+daviplata.setCurrency("COP");
+daviplata.setInvoice("invoices-1");
+daviplata.setDescription("");
+daviplata.setTax("0");
+daviplata.setTaxBase("0");
+daviplata.setIco("0");
+daviplata.setTestMode("true");
+daviplata.setUrlResponse("");
+daviplata.setUrlConfirmation("");
+daviplata.setMethodConfirmation("");
+
+epayco.createDaviplata(daviplata, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+
+#### Confirm
+
+```java
+DaviplataConfirm = daviplata = new DaviplataConfirm();
+daviplata.setRefPayco("");
+daviplata.setIdSessionToken("");
+daviplata.setOtp("");
+
+epayco.confirmDaviplata(daviplata, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+
+```
