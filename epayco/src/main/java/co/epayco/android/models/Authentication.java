@@ -82,7 +82,7 @@ public class Authentication {
             String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
-
+            token.replace("\n","");
             post("https://apify.epayco.co/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
@@ -108,10 +108,10 @@ public class Authentication {
      * @param options  data user options
      * @param callback response request api
      */
-    public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify @NonNull final EpaycoCallback callback) {
+    public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify, @NonNull final EpaycoCallback callback) {
         
-        if(isApi){
-            client.addHeader("Authorization", options);
+        if(isApify){
+            cliente.addHeader("Authorization", options);
         }else{
             cliente.setBasicAuth(options, "");
         }
@@ -124,11 +124,6 @@ public class Authentication {
                 try {
                     String jsonString = new String(responseBody);
                     JSONObject jsonObject = new JSONObject(jsonString);
-
-                    JSONObject obj = new JSONObject(new String(responseBody));
-
-
-
                     callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
                     callback.onError(e);
