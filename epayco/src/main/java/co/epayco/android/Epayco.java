@@ -381,7 +381,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer2 != null){
                     try {
-                        post("https://api.secure.payco.co/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
+                        post(Base + "/v1/customer/add/token", hashMapFromCLientCardNew(client), token_bearer, callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -460,6 +460,32 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
             }
 
           });
+    }
+
+    public void deletePlan(final String uid, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String projectnumber1 = data.getString("bearer_token");
+                token_bearer2 = projectnumber1;
+                token_bearer = "Bearer " + projectnumber1;
+                //   Log.d("getPlan","=>"+token_bearer);
+                String Base = base(false);
+                if(token_bearer2 != null){
+                    try {
+                        post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid, null, token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("bearer_token","=>"+error);
+            }
+
+        });
     }
 
     /**
