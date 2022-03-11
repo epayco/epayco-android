@@ -349,6 +349,7 @@ pse.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php
 pse.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+pse.setMethodConfirmation("GET");
 pse.setIco("0");
 pse.setExtra1("");
 pse.setExtra2("");
@@ -419,6 +420,7 @@ cash.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 cash.setIco("0");
 cash.setUrlResponse("");
 cash.setUrlConfirmation("");
+cash.setMethodConfirmation("GET");
 cash.setExtra1("");
 cash.setExtra2("");
 cash.setExtra3("");
@@ -507,6 +509,7 @@ charge.setIco("0");
 charge.setUse_default_card_customer(true);/*if the user wants to be charged with the card that the customer currently has as default =true*/
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");
+charge.setMethodConfirmation("GET");
 charge.setExtra1("");
 charge.setExtra2("");
 charge.setExtra3("");
@@ -582,7 +585,7 @@ daviplata.setIco("0");
 daviplata.setTestMode("true");
 daviplata.setUrlResponse("");
 daviplata.setUrlConfirmation("");
-daviplata.setMethodConfirmation("");
+daviplata.setMethodConfirmation("POST");
 
 epayco.createDaviplata(daviplata, new EpaycoCallback() {
     @Override
@@ -609,4 +612,46 @@ epayco.confirmDaviplata(daviplata, new EpaycoCallback() {
     public void onError(Exception error) {}
 });
 
+```
+
+### Safetypay
+
+#### Create
+
+```java
+Safetypay safetypay = new Safetypay();
+
+safetypay.setCash("1");
+safetypay.setEndDate("2020-03-15");
+safetypay.setDocType("CC");
+safetypay.setDocument("1035851980");
+safetypay.setName("Jhon");
+safetypay.setIndCountry("57");
+safetypay.setCity("Bogota");
+safetypay.setAddress("Av principal");
+safetypay.setValue("100");
+safetypay.setLastName("0");
+safetypay.setEmail("example@mail.com");
+safetypay.setPhone("3010000001");
+safetypay.setCountry("CO");
+safetypay.setIp("190.000.000.000");
+safetypay.setCurrency("COP");
+safetypay.setInvoice("invoice-android-01");
+safetypay.setDescription("");
+safetypay.setTax("0");
+safetypay.setTaxBase("0");
+safetypay.setIco("0");
+safetypay.setTestMode("true");
+safetypay.setUrlResponse("");
+safetypay.setUrlResponsePointer("");
+safetypay.setUrlConfirmation("");
+safetypay.setMethodConfirmation("GET");
+
+epayco.createSafetypay(safetypay, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
 ```

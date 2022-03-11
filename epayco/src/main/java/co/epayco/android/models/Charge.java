@@ -26,6 +26,7 @@ public class Charge {
     Boolean use_default_card_customer;
     String urlResponse;
     String urlConfirmation;
+    String methodConfirmation;
     String extra1;
     String extra2;
     String extra3;
@@ -296,5 +297,13 @@ public class Charge {
 
     public void setUse_default_card_customer(Boolean use_default_card_customer) {
         this.use_default_card_customer = use_default_card_customer;
+    }
+
+    public String getMethodConfirmation() {
+        return methodConfirmation;
+    }
+
+    public void setMethodConfirmation(String method_confirmation){
+        this.methodConfirmation = method_confirmation;
     }
 }
