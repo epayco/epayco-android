@@ -349,6 +349,8 @@ pse.setUrlConfirmation("https:/secure.payco.co/restpagos/testRest/endpagopse.php
 pse.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+pse.setMethodConfirmation("GET");
+pse.setIco("0");
 pse.setExtra1("");
 pse.setExtra2("");
 pse.setExtra3("");
@@ -403,11 +405,6 @@ Cash cash = new Cash();
 //Schema
 cash.setType("efecty");
 cash.setEndDate("2017-12-05");
-
-//Required
-cash.setDocType("CC");
-cash.setDocNumber("1035851980");
-cash.setName("John");
 cash.setLastName("Doe");
 cash.setEmail("example@email.com");
 cash.setInvoice("OR-1234");
@@ -420,8 +417,10 @@ cash.setCurrency("COP");
 cash.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+cash.setIco("0");
 cash.setUrlResponse("");
 cash.setUrlConfirmation("");
+cash.setMethodConfirmation("GET");
 cash.setExtra1("");
 cash.setExtra2("");
 cash.setExtra3("");
@@ -506,9 +505,11 @@ charge.setDues("12");
 charge.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 //Optional
+charge.setIco("0");
 charge.setUse_default_card_customer(true);/*if the user wants to be charged with the card that the customer currently has as default =true*/
 charge.setUrlResponse("");
 charge.setUrlConfirmation("");
+charge.setMethodConfirmation("GET");
 charge.setExtra1("");
 charge.setExtra2("");
 charge.setExtra3("");
@@ -551,4 +552,106 @@ Charge charge = new Charge();
                 charge.setSplit_primary_receiver ("19520");
                 charge.setSplit_primary_receiver_fee ("10");
 
+```
+
+### Daviplata
+
+#### Create
+
+```java
+
+Daviplata daviplata = new Daviplata();
+
+daviplata.setDocType("CC");
+daviplata.setDocument("1035851980");
+daviplata.setName("Jhon");
+daviplata.setIndCountry("57");
+daviplata.setCity("Bogota");
+daviplata.setAddress("av principal");
+daviplata.setValue("100");
+daviplata.setIp("190.000.000.000");
+
+// optional
+daviplata.setLastName("Doe");
+daviplata.setEmail("example@email.com");
+daviplata.setPhone("3010000001");
+daviplata.setCountry("CO");
+daviplata.setCurrency("COP");
+daviplata.setInvoice("invoices-1");
+daviplata.setDescription("");
+daviplata.setTax("0");
+daviplata.setTaxBase("0");
+daviplata.setIco("0");
+daviplata.setTestMode("true");
+daviplata.setUrlResponse("");
+daviplata.setUrlConfirmation("");
+daviplata.setMethodConfirmation("POST");
+
+epayco.createDaviplata(daviplata, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+
+#### Confirm
+
+```java
+DaviplataConfirm = daviplata = new DaviplataConfirm();
+daviplata.setRefPayco("");
+daviplata.setIdSessionToken("");
+daviplata.setOtp("");
+
+epayco.confirmDaviplata(daviplata, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+
+```
+
+### Safetypay
+
+#### Create
+
+```java
+Safetypay safetypay = new Safetypay();
+
+safetypay.setCash("1");
+safetypay.setEndDate("2020-03-15");
+safetypay.setDocType("CC");
+safetypay.setDocument("1035851980");
+safetypay.setName("Jhon");
+safetypay.setIndCountry("57");
+safetypay.setCity("Bogota");
+safetypay.setAddress("Av principal");
+safetypay.setValue("100");
+safetypay.setLastName("0");
+safetypay.setEmail("example@mail.com");
+safetypay.setPhone("3010000001");
+safetypay.setCountry("CO");
+safetypay.setIp("190.000.000.000");
+safetypay.setCurrency("COP");
+safetypay.setInvoice("invoice-android-01");
+safetypay.setDescription("");
+safetypay.setTax("0");
+safetypay.setTaxBase("0");
+safetypay.setIco("0");
+safetypay.setTestMode("true");
+safetypay.setUrlResponse("");
+safetypay.setUrlResponsePointer("");
+safetypay.setUrlConfirmation("");
+safetypay.setMethodConfirmation("GET");
+
+epayco.createSafetypay(safetypay, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
 ```

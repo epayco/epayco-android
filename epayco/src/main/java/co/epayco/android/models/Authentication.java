@@ -13,6 +13,7 @@ import co.epayco.android.util.EpaycoCallback;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import android.util.Base64;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +70,20 @@ public class Authentication {
 
     public Epayco AuthService (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey, callback);
+            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey,false, callback);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+        return null;
+    }
+
+    public Epayco AuthServiceApify (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
+        try {
+            String basic = apiKey+":"+privateKey;
+            byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
+            String token = new String(encoded);
+            token.replace("\n","");
+            post("https://apify.epayco.co/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -94,8 +108,14 @@ public class Authentication {
      * @param options  data user options
      * @param callback response request api
      */
-    public static void post(String url, @NonNull RequestParams data, String options, @NonNull final EpaycoCallback callback) {
-        cliente.setBasicAuth(options, "");
+    public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify, @NonNull final EpaycoCallback callback) {
+        
+        if(isApify){
+            cliente.addHeader("Authorization", options);
+        }else{
+            cliente.setBasicAuth(options, "");
+        }
+
         cliente.addHeader("type", "sdk");
         cliente.post(url, data, new AsyncHttpResponseHandler() {
             @Override
@@ -104,11 +124,6 @@ public class Authentication {
                 try {
                     String jsonString = new String(responseBody);
                     JSONObject jsonObject = new JSONObject(jsonString);
-
-                    JSONObject obj = new JSONObject(new String(responseBody));
-
-
-
                     callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
                     callback.onError(e);
