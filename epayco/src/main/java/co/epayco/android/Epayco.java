@@ -764,7 +764,6 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                             String projectnumber1 = data.getString("bearer_token");
                             token_bearer2 = projectnumber1;
                             token_bearer = "Bearer " + projectnumber1;
-                            //  Log.d("createCashTransaction", "=>" + token_bearer);
                             String Base = base(true), url = null;
 
                             boolean success = entities.getBoolean("success");
@@ -776,7 +775,8 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                             boolean notValid = true;
                             JSONArray dataObj = entities.getJSONArray("data");
                             for(int i =0; i< dataObj.length(); i++){
-                                String name = dataObj.getString(Integer.parseInt("name"));
+                                JSONObject item = dataObj.getJSONObject(i);
+                                String name = item.getString("name");
                                 if(type.equals(name.toLowerCase(Locale.ROOT))){
                                     notValid = false;
                                 }
@@ -784,6 +784,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                             if(notValid){
                                 Exception err = new Exception("Método de pago en efectivo no válido, unicamnete soportados: efecty, gana, redservi, puntored, sured");
                                 callback.onError(err);
+                                return;
                             }
                             url = "/restpagos/v2/efectivo/" + type;
                             if(token_bearer2 != null){
@@ -816,6 +817,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                         try {
                             get(BASE_URL_APIFY + "/payment/cash/entities", token_bearer, CashCreate);
                         } catch (Exception e) {
+                            Log.d("Error al consultar la lista de entidades","=>"+error);
                             CashCreate.onError(e);
                         }
                     }
@@ -823,6 +825,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
 
                 @Override
                 public void onError(Exception error) {
+                    CashCreate.onError(error);
                     Log.d("bearer_token","=>"+error);
                 }
             });
