@@ -154,6 +154,7 @@ public class EpaycoNetworkUtils {
         chargeParams.put("use_default_card_customer", charge.getUse_default_card_customer());
         chargeParams.put("url_response", charge.getUrlResponse());
         chargeParams.put("url_confirmation", charge.getUrlConfirmation());
+        chargeParams.put("method_confirmation", charge.getMethodConfirmation());
         chargeParams.put("extra1", charge.getExtra1());
         chargeParams.put("extra2", charge.getExtra2());
         chargeParams.put("extra3", charge.getExtra3());
@@ -211,7 +212,7 @@ public class EpaycoNetworkUtils {
 
         //Optional
         pseParams.put("ico", encrypt(pse.getIco(), secretKey));
-        pseParams.put("metodoconfirmacion", encrypt("GET", secretKey));
+        pseParams.put("metodoconfirmacion", encrypt(pse.getMethodConfirmation(), secretKey));
         pseParams.put("direccion", encrypt(pse.getAddress(), secretKey));
         pseParams.put("extra1", encrypt(pse.getExtra1(), secretKey));
         pseParams.put("extra2", encrypt(pse.getExtra2(), secretKey));
@@ -272,6 +273,7 @@ public class EpaycoNetworkUtils {
         cashParams.put("ico", cash.getIco());
         cashParams.put("url_respuesta", cash.getUrlResponse());
         cashParams.put("url_confirmacion", cash.getUrlConfirmation());
+        cashParams.put("metodoconfirmacion", cash.getMethodConfirmation());
         cashParams.put("extra1", cash.getExtra1());
         cashParams.put("extra2", cash.getExtra2());
         cashParams.put("extra3", cash.getExtra3());
@@ -294,10 +296,6 @@ public class EpaycoNetworkUtils {
         return cashParams;
     }
 
-    public static RequestParams hashMapFromEmpty() {
-        RequestParams emptyParams = new RequestParams();
-        return emptyParams;
-    }
     public static RequestParams hashMapFromDaviplata(Daviplata daviplata) {
 
         RequestParams daviplataParams = new RequestParams();
@@ -377,6 +375,10 @@ public class EpaycoNetworkUtils {
         return safetypayParams;
     }
 
+    public static RequestParams hashMapFromEmpty() {
+        RequestParams emptyParams = new RequestParams();
+        return emptyParams;
+    }
 
     public static String encrypt(String value, String key) {
         String cryptText = null, keyString = ((value == null) ? "N/A" : value);

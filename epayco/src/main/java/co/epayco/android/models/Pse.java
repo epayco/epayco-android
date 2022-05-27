@@ -24,6 +24,7 @@ public class Pse {
     String country;
 
     //Optional
+    String methodConfirmation;
     String ico;
     String extra1;
     String extra2;
@@ -286,5 +287,13 @@ public class Pse {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getMethodConfirmation() {
+        return methodConfirmation;
+    }
+
+    public void setMethodConfirmation(String method_confirmation){
+        this.methodConfirmation = method_confirmation;
     }
 }

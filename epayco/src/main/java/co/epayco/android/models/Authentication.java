@@ -81,10 +81,9 @@ public class Authentication {
         try {
             String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
-            String tokenizer = new String(encoded);
-            String token = "Basic " + tokenizer;
-            System.out.println("voy a pedir el token a apify");
-            post("https://apify.epayco.io/login", new RequestParams(), token, true, callback);
+            String token = new String(encoded);
+            token.replace("\n","");
+            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -112,33 +111,20 @@ public class Authentication {
     public static void post(String url, @NonNull RequestParams data, String options, Boolean isApify, @NonNull final EpaycoCallback callback) {
         
         if(isApify){
-            System.out.println("entro al if isApify \n");
-            System.out.println("inicio-"+options.replace("\n", "")+"-fin \n");
-            cliente.addHeader("Authorization", options.replace("\n", ""));
+            cliente.addHeader("Authorization", options);
         }else{
             cliente.setBasicAuth(options, "");
         }
 
         cliente.addHeader("type", "sdk");
-        System.out.println("data= " + data.toString());
-        System.out.println(cliente.toString());
-
         cliente.post(url, data, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
                 try {
                     String jsonString = new String(responseBody);
-                    System.out.println("jsonString \n");
-                    System.out.println(jsonString);
                     JSONObject jsonObject = new JSONObject(jsonString);
-                    System.out.println("jsonObject \n");
-                    System.out.println(jsonObject);
-                    JSONObject obj = new JSONObject(new String(responseBody));
-                    System.out.println("obj \n");
-                    System.out.println(obj);
-
-                    callback.onSuccess(obj);
+                    callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
                     System.out.println("catch => \n");
                     System.out.println(e);
@@ -148,12 +134,6 @@ public class Authentication {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println(("estoy en el onFailure \n"));
-                System.out.println(" \n");
-                System.out.println(headers);
-                System.out.println(" \n");
-                System.out.println(new String(responseBody));
-                System.out.println(" \n");
                 callback.onError((Exception) error);
             }
 
