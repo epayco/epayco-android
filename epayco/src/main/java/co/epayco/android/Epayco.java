@@ -755,6 +755,11 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
      * @param callback    response request api
      */
         public void createCashTransaction(final Cash cash, @NonNull final EpaycoCallback callback) {
+            if(cash.getType().toLowerCase(Locale.ROOT).equals("baloto")){
+                Exception err = new Exception("Método de pago en efectivo no válido, unicamnete soportados: efecty, gana, redservi, puntored, sured");
+                callback.onError(err);
+                return;
+            }
             final EpaycoCallback CashCreate = new EpaycoCallback() {
                 @Override
                 public void onSuccess(final JSONObject entities) throws JSONException {
@@ -776,7 +781,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                             JSONArray dataObj = entities.getJSONArray("data");
                             for(int i =0; i< dataObj.length(); i++){
                                 JSONObject item = dataObj.getJSONObject(i);
-                                String name = item.getString("name");
+                                String name = item.getString("name").replace(" ", "");
                                 if(type.equals(name.toLowerCase(Locale.ROOT))){
                                     notValid = false;
                                 }
@@ -817,7 +822,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
                         try {
                             get(BASE_URL_APIFY + "/payment/cash/entities", token_bearer, CashCreate);
                         } catch (Exception e) {
-                            Log.d("Error al consultar la lista de entidades","=>"+error);
+                            Log.d("lista de entidades","=>"+e);
                             CashCreate.onError(e);
                         }
                     }
