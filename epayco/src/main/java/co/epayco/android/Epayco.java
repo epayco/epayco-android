@@ -32,6 +32,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 
 public class Epayco {
 
