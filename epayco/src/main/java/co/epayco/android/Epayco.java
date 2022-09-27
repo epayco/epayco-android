@@ -41,6 +41,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDef
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplata;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromEmpty;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 
 import java.util.Locale;
 
