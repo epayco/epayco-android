@@ -123,6 +123,15 @@ public class EpaycoNetworkUtils {
         return subscriptionParams;
     }
 
+    public static RequestParams hashMapFromSubCancel(String id) {
+
+        RequestParams subscriptionParams = new RequestParams();
+
+        subscriptionParams.put("id", id);
+
+        return subscriptionParams;
+    }
+
     public static RequestParams hashMapFromCharge(Charge charge) {
 
         RequestParams chargeParams = new RequestParams();
