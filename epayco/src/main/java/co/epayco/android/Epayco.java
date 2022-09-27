@@ -669,7 +669,7 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
             }
             @Override
             public void onError(Exception error) {
-                Log.d("bearer_token "+error);
+                 Log.d("bearer_token","=>"+error);
             }
         });
     }
