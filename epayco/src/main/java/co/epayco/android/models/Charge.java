@@ -22,9 +22,11 @@ public class Charge {
     String dues;
     String ip;
     //Optional
+    String ico;
     Boolean use_default_card_customer;
     String urlResponse;
     String urlConfirmation;
+    String methodConfirmation;
     String extra1;
     String extra2;
     String extra3;
@@ -127,6 +129,14 @@ public class Charge {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public void setIco(String ico){
+        this.ico = ico;
     }
 
     public String getTaxBase() {
@@ -287,5 +297,13 @@ public class Charge {
 
     public void setUse_default_card_customer(Boolean use_default_card_customer) {
         this.use_default_card_customer = use_default_card_customer;
+    }
+
+    public String getMethodConfirmation() {
+        return methodConfirmation;
+    }
+
+    public void setMethodConfirmation(String method_confirmation){
+        this.methodConfirmation = method_confirmation;
     }
 }

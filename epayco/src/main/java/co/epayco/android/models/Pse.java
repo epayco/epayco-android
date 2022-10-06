@@ -24,6 +24,8 @@ public class Pse {
     String country;
 
     //Optional
+    String methodConfirmation;
+    String ico;
     String extra1;
     String extra2;
     String extra3;
@@ -125,6 +127,14 @@ public class Pse {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public void setIco(String ico){
+        this.ico = ico;
     }
 
     public String getPhone() {
@@ -277,5 +287,13 @@ public class Pse {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getMethodConfirmation() {
+        return methodConfirmation;
+    }
+
+    public void setMethodConfirmation(String method_confirmation){
+        this.methodConfirmation = method_confirmation;
     }
 }
