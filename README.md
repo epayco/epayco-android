@@ -24,7 +24,7 @@ Add the dependency
 
 ```gradle
 
-  implementation 'com.github.epayco:epayco-android:v3.12.0'
+  implementation 'com.github.epayco:epayco-android:v3.13.0'
 
 
 ```
@@ -292,6 +292,18 @@ sub.setDocNumber("5234567");
 sub.setIp("190.000.000.000");/*This is the client's IP, it is required*/
 
 epayco.chargeSubscription(sub, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+
+#### Cancel
+
+```java
+epayco.cancelSubscription("id_subscription", new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 

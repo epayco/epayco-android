@@ -37,8 +37,10 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplata;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromEmpty;
+
 
 public class Epayco {
 
@@ -641,6 +643,35 @@ public void createPlan(@NonNull final Plan plan, @NonNull final EpaycoCallback c
     }
 });
     }
+
+
+    /**
+     * Cancel subscription from id
+     * @param uid         id subscription
+     * @param callback    response request api
+     */
+    public void cancelSubscription(final String uid, @NonNull final EpaycoCallback callback) {
+        Epayco epayco = new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                String token = data.getString("bearer_token");
+                token_bearer = "Bearer " + token;
+                String Base = base(false);
+                if(token != null){
+                    try {
+                        post(Base + "/recurring/v1/subscription/cancel", hashMapFromSubCancel(uid), token_bearer, callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }   
+                }
+            }
+            @Override
+            public void onError(Exception error) {
+                 Log.d("bearer_token","=>"+error);
+            }
+        });
+    }
+
 
     /***************************
      * Access bank definitions *
