@@ -6,6 +6,7 @@ public class Card {
     String month;
     String year;
     String cvc;
+    Boolean hasCvv;
 
     public Card() {}
 
@@ -67,5 +68,13 @@ public class Card {
 
     public void setCvc(String cvc) {
         this.cvc = cvc;
+    }
+
+    public Boolean getHasCvv() {
+        return hasCvv;
+    }
+
+    public void setHasCvv(Boolean hasCvv) {
+        this.hasCvv = hasCvv;
     }
 }
