@@ -70,6 +70,7 @@ card.setNumber("4575623182290326");
 card.setMonth("12");
 card.setYear("2018");
 card.setCvc("123");
+card.setHasCvv(true); //hasCvv: validar codigo de seguridad en la transacción
 
 epayco.createToken(card, new EpaycoCallback() {
     @Override
