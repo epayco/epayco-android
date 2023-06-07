@@ -29,7 +29,7 @@ public class EpaycoNetworkUtils {
         cardParams.put("card[cvc]", card.getCvc());
         cardParams.put("card[exp_month]", card.getMonth());
         cardParams.put("card[exp_year]", card.getYear());
-
+        cardParams.put("hasCvv", card.getHasCvv());
         return cardParams;
     }
 
