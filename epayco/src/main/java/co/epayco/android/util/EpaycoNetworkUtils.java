@@ -30,6 +30,7 @@ public class EpaycoNetworkUtils {
         cardParams.put("card[exp_month]", card.getMonth());
         cardParams.put("card[exp_year]", card.getYear());
         cardParams.put("hasCvv", card.getHasCvv());
+
         return cardParams;
     }
 
@@ -42,20 +43,20 @@ public class EpaycoNetworkUtils {
         clientParams.put("email", client.getEmail());
         clientParams.put("phone", client.getPhone());
         clientParams.put("default", client.getDefaultCard());
-       
+
 
         return clientParams;
     }
 
 
-        public static RequestParams hashMapFromCLientDelete(Client client) {
+    public static RequestParams hashMapFromCLientDelete(Client client) {
 
         RequestParams clientParams = new RequestParams();
 
         clientParams.put("franchise", client.getFranchise());
         clientParams.put("mask", client.getMask());
         clientParams.put("customer_id", client.getCustomer_id());
-       
+
         return clientParams;
     }
 
@@ -67,17 +68,17 @@ public class EpaycoNetworkUtils {
         clientParams.put("token", client.getTokenId());
         clientParams.put("franchise", client.getFranchise());
         clientParams.put("mask", client.getMask());
-        
-       
+
+
         return clientParams;
     }
 
-        public static RequestParams hashMapFromCLientCardNew(Client client) {
+    public static RequestParams hashMapFromCLientCardNew(Client client) {
 
         RequestParams clientParams = new RequestParams();
         clientParams.put("token_card", client.getTokenId());
         clientParams.put("customer_id", client.getCustomer_id());
-               
+
         return clientParams;
     }
 
@@ -114,6 +115,12 @@ public class EpaycoNetworkUtils {
 
     public static RequestParams hashMapFromSubCharge(ChargeSub subscription) {
 
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5","P47");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         RequestParams subscriptionParams = new RequestParams();
 
         subscriptionParams.put("id_plan", subscription.getIdPlan());
@@ -122,6 +129,8 @@ public class EpaycoNetworkUtils {
         subscriptionParams.put("doc_type", subscription.getDocType());
         subscriptionParams.put("doc_number", subscription.getDocNumber());
         subscriptionParams.put("ip", subscription.getIp());
+        subscriptionParams.put("extras_epayco", extras_epayco);
+
 
         return subscriptionParams;
     }
@@ -137,6 +146,12 @@ public class EpaycoNetworkUtils {
 
     public static RequestParams hashMapFromCharge(Charge charge) {
 
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5","P47");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         RequestParams chargeParams = new RequestParams();
 
         //Schema
@@ -157,7 +172,7 @@ public class EpaycoNetworkUtils {
         chargeParams.put("currency", charge.getCurrency());
         chargeParams.put("dues", charge.getDues());
         chargeParams.put("ip", charge.getIp());
-
+        chargeParams.put("extras_epayco", extras_epayco);
         //Optional
         chargeParams.put("ico", charge.getIco());
         chargeParams.put("use_default_card_customer", charge.getUse_default_card_customer());
@@ -185,7 +200,12 @@ public class EpaycoNetworkUtils {
 
         RequestParams pseParams = new RequestParams();
         String apiKey = null, secretKey = null, test = null;
-
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5",encrypt("P47", secretKey));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         try {
             apiKey = options.getString("apiKey");
             secretKey = options.getString("privateKey");
@@ -218,7 +238,7 @@ public class EpaycoNetworkUtils {
         pseParams.put("url_respuesta", encrypt(pse.getUrlResponse(), secretKey));
         pseParams.put("url_confirmacion", encrypt(pse.getUrlConfirmation(), secretKey));
         pseParams.put("ip", encrypt(pse.getIp(), secretKey));
-
+        pseParams.put("extras_epayco", extras_epayco);
         //Optional
         pseParams.put("ico", encrypt(pse.getIco(), secretKey));
         pseParams.put("metodoconfirmacion", encrypt(pse.getMethodConfirmation(), secretKey));
@@ -228,9 +248,7 @@ public class EpaycoNetworkUtils {
         pseParams.put("extra3", encrypt(pse.getExtra3(), secretKey));
         pseParams.put("ciudad", encrypt(pse.getCity(), secretKey));
         pseParams.put("depto", encrypt(pse.getDepto(), secretKey));
-        if (pse.getSplitpayment()==null ){
-
-        }else{
+        if (pse.getSplitpayment()!=null ){
             pseParams.put("splitpayment", encrypt(pse.getSplitpayment(),secretKey));
             pseParams.put("split_app_id", encrypt(pse.getSplit_app_id(),secretKey));
             pseParams.put("split_merchant_id", encrypt(pse.getSplit_merchant_id(),secretKey));
@@ -250,7 +268,12 @@ public class EpaycoNetworkUtils {
 
         RequestParams cashParams = new RequestParams();
         String apiKey = null, secretKey = null, test = null;
-
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5","P47");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         try {
             apiKey = options.getString("apiKey");
             secretKey = options.getString("privateKey");
@@ -277,6 +300,7 @@ public class EpaycoNetworkUtils {
         cashParams.put("celular", cash.getPhone());
         cashParams.put("moneda", cash.getCurrency());
         cashParams.put("ip", cash.getIp());
+        cashParams.put("extras_epayco", extras_epayco);
 
         //Optional
         cashParams.put("ico", cash.getIco());
@@ -308,7 +332,12 @@ public class EpaycoNetworkUtils {
     public static RequestParams hashMapFromDaviplata(Daviplata daviplata) {
 
         RequestParams daviplataParams = new RequestParams();
-
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5","P47");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         //Required
         daviplataParams.put("docType", daviplata.getDocType());
         daviplataParams.put("document", daviplata.getDocument());
@@ -317,6 +346,7 @@ public class EpaycoNetworkUtils {
         daviplataParams.put("city", daviplata.getCity());
         daviplataParams.put("address", daviplata.getAddress());
         daviplataParams.put("value", daviplata.getValue());
+        daviplataParams.put("extras_epayco", extras_epayco);
 
         //Optional
         daviplataParams.put("lastName", daviplata.getLastName());
