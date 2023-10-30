@@ -70,7 +70,7 @@ public class Authentication {
 
     public Epayco AuthService (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey,false, callback);
+            post("https://api.secure.epayco.io/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey,false, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -82,8 +82,8 @@ public class Authentication {
             String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
-            token.replace("\n","");
-            post("https://apify.epayco.co/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
+            token = token.replace("\n","");
+            post("https://apify.epayco.io/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -126,6 +126,8 @@ public class Authentication {
                     JSONObject jsonObject = new JSONObject(jsonString);
                     callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
+                    System.out.println("catch => \n");
+                    System.out.println(e);
                     callback.onError(e);
                 }
             }
