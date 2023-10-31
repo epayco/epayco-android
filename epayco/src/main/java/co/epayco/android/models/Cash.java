@@ -23,8 +23,10 @@ public class Cash {
     String ip;
 
     //Optional
+    String ico;
     String urlResponse;
     String urlConfirmation;
+    String methodConfirmation;
     String extra1;
     String extra2;
     String extra3;
@@ -128,6 +130,14 @@ public class Cash {
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getIco(){
+        return ico;
+    }
+
+    public void setIco(String ico){
+        this.ico = ico;
     }
 
     public String getPhone() {
@@ -274,11 +284,19 @@ public class Cash {
         this.split_primary_receiver_fee = split_primary_receiver_fee;
     }
 
-        public String getIp() {
+    public String getIp() {
         return ip;
     }
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getMethodConfirmation() {
+        return methodConfirmation;
+    }
+
+    public void setMethodConfirmation(String method_confirmation){
+        this.methodConfirmation = method_confirmation;
     }
 }
