@@ -200,12 +200,6 @@ public class EpaycoNetworkUtils {
 
         RequestParams pseParams = new RequestParams();
         String apiKey = null, secretKey = null, test = null;
-        JSONObject extras_epayco = new JSONObject();
-        try {
-            extras_epayco.put("extra5",encrypt("P47", secretKey));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
         try {
             apiKey = options.getString("apiKey");
             secretKey = options.getString("privateKey");
@@ -213,7 +207,12 @@ public class EpaycoNetworkUtils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        JSONObject extras_epayco = new JSONObject();
+        try {
+            extras_epayco.put("extra5",encrypt("P47", secretKey));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         //Schema
         pseParams.put("public_key", apiKey);
         pseParams.put("banco", encrypt(pse.getBank(), secretKey));
