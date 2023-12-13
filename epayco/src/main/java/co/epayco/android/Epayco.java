@@ -54,9 +54,9 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static final String BASE_URL = "https://api.secure.epayco.io";
-    private static final String BASE_URL_SECURE = "https://secure2.epayco.io/restpagos";
-    public static final String BASE_URL_APIFY = "https://apify.epayco.io";
+    public static final String BASE_URL = "https://api.secure.payco.co";
+    private static final String BASE_URL_SECURE = "https://secure.payco.co/restpagos";
+    public static final String BASE_URL_APIFY = "https://apify.epayco.co";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
