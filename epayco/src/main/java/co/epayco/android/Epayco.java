@@ -39,7 +39,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSub;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
