@@ -1301,7 +1301,7 @@ public class Epayco {
      * @param token  data user token
      * @param callback response request api
      */
-    public void get(String urlString, String token, EpaycoCallback callback) {
+    public void get(final String urlString,final String token,final EpaycoCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1356,7 +1356,7 @@ public class Epayco {
      * @param token      data user token
      * @param callback response request api
      */
-    public static void post(String urlString, String jsonBody, String token, EpaycoCallback callback) {
+    public static void post(final String urlString,final String jsonBody,final String token,final EpaycoCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
