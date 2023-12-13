@@ -1,19 +1,16 @@
-// package co.epayco.android.models;
-// import com.loopj.android.http.RequestParams;
-// import com.loopj.android.http.*;
-// import cz.msebera.android.httpclient.Header;
-// import org.json.JSONException;
-// import org.json.JSONObject;
-// import co.epayco.android.util.EpaycoCallback;
-
 package co.epayco.android.models;
-import android.support.annotation.NonNull;
+
+import static co.epayco.android.Epayco.BASE_URL;
+import static co.epayco.android.Epayco.BASE_URL_APIFY;
+
 import co.epayco.android.Epayco;
 import co.epayco.android.util.EpaycoCallback;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import android.util.Base64;
+
+import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +67,7 @@ public class Authentication {
 
     public Epayco AuthService (String apiKey, String privateKey, @NonNull EpaycoCallback callback) {
         try {
-            post("https://api.secure.payco.co/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey,false, callback);
+            post(BASE_URL+"/v1/auth/login", GetBearerToken(apiKey,privateKey), apiKey,false, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -82,8 +79,8 @@ public class Authentication {
             String basic = apiKey+":"+privateKey;
             byte[] encoded = Base64.encode(basic.getBytes(), Base64.DEFAULT);
             String token = new String(encoded);
-            token.replace("\n","");
-            post("https://apify.epayco.co/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
+            token = token.replace("\n","");
+            post(BASE_URL_APIFY+"/login", GetBearerToken(apiKey,privateKey), "Basic " + token, true, callback);
         } catch (Exception e) {
             callback.onError(e);
         }
@@ -126,6 +123,8 @@ public class Authentication {
                     JSONObject jsonObject = new JSONObject(jsonString);
                     callback.onSuccess(jsonObject);
                 } catch (JSONException e) {
+                    System.out.println("catch => \n");
+                    System.out.println(e);
                     callback.onError(e);
                 }
             }

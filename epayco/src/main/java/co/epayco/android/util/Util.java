@@ -1,9 +1,5 @@
 package co.epayco.android.util;
 
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import static co.epayco.android.models.Card.AMERICAN_EXPRESS;
 import static co.epayco.android.models.Card.DINERS_CLUB;
 import static co.epayco.android.models.Card.DISCOVER;
@@ -17,6 +13,9 @@ import static co.epayco.android.models.Card.PREFIXES_MASTERCARD;
 import static co.epayco.android.models.Card.PREFIXES_VISA;
 import static co.epayco.android.models.Card.UNKNOWN;
 import static co.epayco.android.models.Card.VISA;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Util {
 
