@@ -1,4 +1,4 @@
-package cco.epayco.android.ui.theme
+package com.example.sdkepayco.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package co.epayco.android.ui.theme
+package com.example.sdkepayco.ui.theme
 
 import android.app.Activity
 import android.os.Build

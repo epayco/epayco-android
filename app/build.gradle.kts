@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "co.epayco.android"
+    namespace = "com.example.sdkepayco"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "co.epayco.android"
+        applicationId = "com.example.sdkepayco"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

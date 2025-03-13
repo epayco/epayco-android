@@ -1,4 +1,4 @@
-package co.epayco.android
+package com.example.sdkepayco
 
 import org.junit.Test
 

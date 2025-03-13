@@ -1,4 +1,4 @@
-package co.epayco.android
+package com.example.sdkepayco
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import co.epayco.android.ui.theme.SdkEpaycoTheme
+import com.example.sdkepayco.ui.theme.SdkEpaycoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
