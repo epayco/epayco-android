@@ -9,7 +9,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenAndroid") {
             afterEvaluate {
-                from(components["release"])
+                from(components["android"])
             }
         }
     }
