@@ -29,6 +29,20 @@ android {
     }
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("mavenAndroid") {
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("file://${buildDir}/repo")
+        }
+    }
+}
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.0'
@@ -43,5 +57,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1') {
         exclude group: 'androidx.annotation', module: 'annotation'
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.0") {
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
     }
 }
