@@ -1,55 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-}
-android {
-    compileSdkVersion 34
-    buildToolsVersion "25.0.2"
-    defaultConfig {
-        applicationId "co.epayco.example"
-        minSdkVersion 24
-        targetSdkVersion 35
-        versionCode 1
-        versionName "1.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-    }
-}
-
-dependencies {
-
-    implementation libs.androidx.appcompat
-    implementation libs.material
-    implementation libs.androidx.activity
-    implementation libs.androidx.constraintlayout
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso.core
-    implementation 'androidx.annotation:annotation:1.6.0'
-    implementation 'com.loopj.android:android-async-http:1.4.9'
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1') {
-        exclude group: 'androidx.annotation', module: 'annotation'
-    }
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    //testCompile 'junit:junit:4.12'
-    
-    implementation project(':epayco')
+    alias(libs.plugins.android-application)
+    alias(libs.plugins.kotlin-android)
+    alias(libs.plugins.kotlin-compose)
 }
