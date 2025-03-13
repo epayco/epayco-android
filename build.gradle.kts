@@ -4,18 +4,3 @@ plugins {
     id("maven-publish")
 }
 
-// Configuración del plugin maven-publish
-publishing {
-    publications {
-        create<MavenPublication>("mavenAndroid") {
-            afterEvaluate {
-                from(components["release"])
-            }
-        }
-    }
-    repositories {
-        maven {
-            url = uri("file://${buildDir}/repo")
-        }
-    }
-}
