@@ -7,8 +7,10 @@ plugins {
 // Configuración del plugin maven-publish
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
+        create<MavenPublication>("mavenAndroid") {
+            afterEvaluate {
+                from(components["release"])
+            }
         }
     }
     repositories {
