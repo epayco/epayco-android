@@ -12,9 +12,11 @@ import co.epayco.android.models.Cash;
 import co.epayco.android.models.Charge;
 import co.epayco.android.models.ChargeSub;
 import co.epayco.android.models.Client;
+import co.epayco.android.models.ClientList;
 import co.epayco.android.models.Daviplata;
 import co.epayco.android.models.DaviplataConfirm;
 import co.epayco.android.models.Plan;
+import co.epayco.android.models.PlanUpdate;
 import co.epayco.android.models.Pse;
 import co.epayco.android.models.Safetypay;
 import co.epayco.android.models.Subscription;
@@ -26,12 +28,14 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLient;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientDelete;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLients;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCard;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCash;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromCharge;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplataConfirm;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromEmpty;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPlan;
+import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPlanUpdate;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromPse;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSafetypay;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromDaviplata;
@@ -39,7 +43,8 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSub;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +52,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
@@ -54,9 +60,9 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static final String BASE_URL = "https://api.secure.payco.co";
-    private static final String BASE_URL_SECURE = "https://secure.payco.co/restpagos";
-    public static final String BASE_URL_APIFY = "https://apify.epayco.co";
+    public static final String BASE_URL = "https://api.secure.epayco.io";
+    private static final String BASE_URL_SECURE = "https://secure2.epayco.io/restpagos";
+    public static final String BASE_URL_APIFY = "https://apify.epayco.io";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -288,7 +294,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/payment/v1/customer/" + apiKey + "/" + uid,token_bearer,callback);
+                        get(Base + "/payment/v1/customer/" + apiKey + "/" + uid,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -306,7 +312,7 @@ public class Epayco {
      * Return list customer
      * @param callback    response request api
      */
-    public void getCustomerList(@NonNull final EpaycoCallback callback) {
+    public void getCustomerList(@NonNull final ClientList clients, @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
@@ -327,9 +333,10 @@ public class Epayco {
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
                 String Base = base(false);
+                String jsonBody = hashMapFromCLients(clients);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/payment/v1/customers/" + apiKey,token_bearer,callback);
+                        get(Base + "/payment/v1/customers/" + apiKey,jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -548,7 +555,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/recurring/v1/plan/" + apiKey + "/" + uid,token_bearer,callback);
+                        get(Base + "/recurring/v1/plan/" + apiKey + "/" + uid,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -627,7 +634,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/recurring/v1/plans/",token_bearer,callback);
+                        get(Base + "/recurring/v1/plans/",null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -640,6 +647,50 @@ public class Epayco {
             }
         });
     }
+
+    /**
+     * Update plan
+     * @param plan        data model plan
+     * @param callback    response request api
+     */
+    public void update(@NonNull final String uid,@NonNull final PlanUpdate plan, @NonNull final EpaycoCallback callback) {
+        final EpaycoCallback Token = new EpaycoCallback() {
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                try {
+                    callback.onSuccess(data);
+                } catch (JSONException e) {
+                    callback.onError(e);
+                }
+            }
+            @Override
+            public void onError(Exception e) {
+                System.err.println("Error en la solicitud: " + e.getMessage());
+                callback.onError(e);
+            }
+        };
+        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                token_bearer = data.getString("bearer_token");
+                String Base = base(false);
+                String jsonBody = hashMapFromPlanUpdate(plan);
+                if(token_bearer != null){
+                    try {
+                        post(Base + "/recurring/v1/plan/edit/"+uid,jsonBody,token_bearer,callback);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("createToken","=>"+error);
+                Token.onError(error);
+            }
+        });
+    }
+
 
     /************************************
      * Access subscriptions definitions *
@@ -717,7 +768,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/recurring/v1/subscription/" + uid + "/" + apiKey,token_bearer,callback);
+                        get(Base + "/recurring/v1/subscription/" + uid + "/" + apiKey,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -758,7 +809,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/recurring/v1/subscriptions/" + apiKey,token_bearer,callback);
+                        get(Base + "/recurring/v1/subscriptions/" + apiKey,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -935,7 +986,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey,token_bearer,callback);
+                        get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -982,7 +1033,7 @@ public class Epayco {
                 String testStr = apiKey + "&test=" + strTest;
                 if(token_bearer != null){
                     try {
-                        get(Base + "/pse/bancos.json?public_key=" + testStr,token_bearer,callback);
+                        get(Base + "/pse/bancos.json?public_key=" + testStr,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1091,7 +1142,7 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
-                        get(Base + "/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey,token_bearer,callback);
+                        get(Base + "/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1301,14 +1352,33 @@ public class Epayco {
      * @param token  data user token
      * @param callback response request api
      */
-    public void get(final String urlString,final String token,final EpaycoCallback callback) {
+    public void get(final String urlString,final String jsonBody ,final String token,final EpaycoCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection = null;
                 try {
+
+                    StringBuilder urlWithParams = new StringBuilder(urlString);
+                    //connection.setDoOutput(true);
+                    // Escribir el cuerpo en la solicitud
+                    if (jsonBody != null && !jsonBody.isEmpty()) {
+                        urlWithParams.append("?");
+                        JSONObject jsonObject = new JSONObject(jsonBody);
+                        urlWithParams.append(URLEncoder.encode("page", "UTF-8"))
+                                .append("=")
+                                .append(URLEncoder.encode(jsonObject.get("page").toString(), "UTF-8"))
+                                .append("&");
+                        urlWithParams.append(URLEncoder.encode("perPage", "UTF-8"))
+                                .append("=")
+                                .append(URLEncoder.encode(jsonObject.get("perPage").toString(), "UTF-8"))
+                                .append("&");
+                        //Eliminar el último "&"
+                        urlWithParams.setLength(urlWithParams.length() - 1);
+                    }
                     // Configurar la URL de destino
-                    URL url = new URL(urlString);
+                    //URL url = new URL(urlString);
+                    URL url = new URL(urlWithParams.toString());
 
                     // Abrir la conexión HTTP
                     connection = (HttpURLConnection) url.openConnection();
@@ -1318,6 +1388,7 @@ public class Epayco {
                     connection.setRequestProperty("Content-Type", "application/json");
                     connection.setRequestProperty("Authorization", "Bearer "+token);
                     connection.setRequestProperty("type", "sdk-jwt ");
+
                     // Obtener la respuesta
                     int responseCode = connection.getResponseCode();
                     if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -1331,14 +1402,24 @@ public class Epayco {
                             }
                             JSONObject response = new JSONObject(new String(data));
                             // Llamar al método onSuccess del Callback
+                            Log.e("epaycoResponse",response.toString());
                             callback.onSuccess(response);
                         }
                     } else {
+                        System.err.println("Error: " + responseCode + " " + connection.getResponseMessage());
+                        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+                        StringBuilder errorResponse = new StringBuilder();
+                        String errorLine;
+                        while ((errorLine = br.readLine()) != null) {
+                            errorResponse.append(errorLine.trim());
+                        }
+                        System.err.println("Detalles del error: " + errorResponse.toString());
                         // Llamar al método onError del Callback en caso de error
-                        callback.onError(new Exception("HTTP Error: " + responseCode));
+                        callback.onError(new IOException(errorResponse.toString()));
                     }
                 } catch (Exception e) {
                     // Llamar al método onError del Callback en caso de excepción
+                    Log.e("epaycoError",e.getMessage());
                     callback.onError(e);
                 } finally {
                     if (connection != null) {
@@ -1365,7 +1446,6 @@ public class Epayco {
                 try {
                     // Configurar la URL de destino
                     URL url = new URL(urlString);
-
                     // Abrir la conexión HTTP
                     connection = (HttpURLConnection) url.openConnection();
 
@@ -1395,14 +1475,28 @@ public class Epayco {
                             }
                             JSONObject response = new JSONObject(new String(data));
                             // Llamar al método onSuccess del Callback
+                            Log.e("epaycoResponse",response.toString());
                             callback.onSuccess(response);
+                        }catch (Exception e) {
+                            // Llamar al método onError del Callback en caso de excepción
+                            Log.e("epaycoError",e.getMessage());
+                            callback.onError(e);
                         }
                     } else {
+                        System.err.println("Error: " + responseCode + " " + connection.getResponseMessage());
+                        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+                        StringBuilder errorResponse = new StringBuilder();
+                        String errorLine;
+                        while ((errorLine = br.readLine()) != null) {
+                            errorResponse.append(errorLine.trim());
+                        }
+                        System.err.println("Detalles del error: " + errorResponse.toString());
                         // Llamar al método onError del Callback en caso de error
-                        callback.onError(new IOException("HTTP Error: " + responseCode));
+                        callback.onError(new IOException(errorResponse.toString()));
                     }
                 } catch (Exception e) {
                     // Llamar al método onError del Callback en caso de excepción
+                    Log.e("epaycoError",e.getMessage());
                     callback.onError(e);
                 } finally {
                     if (connection != null) {

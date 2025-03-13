@@ -1,8 +1,6 @@
 package co.epayco.android.models;
 
-public class Plan {
-
-    String idPlan;
+public class PlanUpdate {
     String name;
     String description;
     String amount;
@@ -13,24 +11,11 @@ public class Plan {
     String ip;
     Float iva;
     Float ico;
-    String planLink;
-    String greetMessage;
-    String linkExpirationDate;
-    String subscriptionLimit;
-    String imgUrl;
-    Float discountValue;
-    int discountPercentage;
     int transactionalLimit;
     Float additionalChargePercentage;
-    Float firstPaymentAdditionalCost;
     String afterPayment;
-    public Plan() {}
-    public String getIdPlan() {
-        return idPlan;
-    }
-    public void setIdPlan(String idPlan) {
-        this.idPlan = idPlan;
-    }
+    public PlanUpdate() {}
+
 
     public String getName() {
         return name;
@@ -93,48 +78,7 @@ public class Plan {
     public void setIco(Float ico) {
         this.ico = ico;
     }
-    public String getPlanLink() {
-        return planLink;
-    }
-    public void setPlanLink(String planLink) {
-        this.planLink = planLink;
-    }
-    public String getGreetMessage() {
-        return greetMessage;
-    }
-    public void setGreetMessage(String greetMessage) {
-        this.greetMessage = greetMessage;
-    }
-    public String getLinkExpirationDate() {
-        return linkExpirationDate;
-    }
-    public void setLinkExpirationDate(String linkExpirationDate) {
-        this.linkExpirationDate = linkExpirationDate;
-    }
-    public String getSubscriptionLimit() {
-        return subscriptionLimit;
-    }
-    public void setSubscriptionLimit(String subscriptionLimit) {
-        this.subscriptionLimit = subscriptionLimit;
-    }
-    public String getImgUrl() {
-        return imgUrl;
-    }
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-    public Float getDiscountValue() {
-        return discountValue;
-    }
-    public void setDiscountValue(Float discountValue) {
-        this.discountValue = discountValue;
-    }
-    public int getDiscountPercentage() {
-        return discountPercentage;
-    }
-    public void setDiscountPercentage(int discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
+
     public int getTransactionalLimit() {
         return transactionalLimit;
     }
@@ -147,19 +91,11 @@ public class Plan {
     public void setAdditionalChargePercentage(Float additionalChargePercentage) {
         this.additionalChargePercentage = additionalChargePercentage;
     }
-    public Float getFirstPaymentAdditionalCost() {
-        return firstPaymentAdditionalCost;
-    }
-    public void setFirstPaymentAdditionalCost(Float firstPaymentAdditionalCost) {
-        this.firstPaymentAdditionalCost = firstPaymentAdditionalCost;
-    }
-
     public String  getAfterPayment() {
         return afterPayment;
     }
     public void setAfterPayment(String afterPayment) {
         this.afterPayment = afterPayment;
     }
-
 
 }

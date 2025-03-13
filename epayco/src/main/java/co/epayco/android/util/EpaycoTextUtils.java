@@ -1,7 +1,7 @@
 package co.epayco.android.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 public class EpaycoTextUtils {
 

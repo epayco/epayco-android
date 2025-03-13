@@ -118,7 +118,10 @@ epayco.getCustomer("id_customer", new EpaycoCallback() {
 #### List
 
 ```java
-epayco.getCustomerList(new EpaycoCallback() {
+ClientList clients = new ClientList();
+client.setPage("1");
+client.setPerPage("5");
+epayco.getCustomerList(clients, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 
@@ -187,16 +190,28 @@ epayco.addNewToken(client, new EpaycoCallback() {
 
 ```java
 Plan plan = new Plan();
-
-plan.setIdPlan("reactcourse");
-plan.setName("Course React");
-plan.setDescription("Course react advanced");
+plan.setIdPlan("androidcourse");
+plan.setName("Course Java");
+plan.setDescription("Java advanced");
 plan.setAmount("30000");
 plan.setCurrency("COP");
 plan.setInterval("month");
 plan.setIntervalCount("1");
-plan.setTrialDays("0");
-
+plan.setTrialDays("10");
+plan.setIp("127.0.0.1");
+plan.setIva(5700.0F);
+plan.setIco(Float.valueOf("0"));
+plan.setPlanLink("https://github.com/epayco");
+plan.setGreetMessage("discounted Java");
+plan.setLinkExpirationDate("2025-03-15");
+plan.setSubscriptionLimit("8");  //Subscription limit between 0 and 10000
+plan.setImgUrl("https://epayco.com/wp-content/uploads/2023/04/logo-blanco.svg");
+plan.setDiscountValue(Float.valueOf("4000")); //discount value
+plan.setDiscountPercentage(19); //iscount percentage
+plan.setTransactionalLimit(3); //transactional Limit
+plan.setAdditionalChargePercentage(Float.valueOf("0.0")); //Additional charge percentage limit
+plan.setFirstPaymentAdditionalCost(Float.valueOf("45700")); //Installation Cost
+plan.setAfterPayment("massage after payment");
 epayco.createPlan(plan, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
@@ -222,6 +237,31 @@ epayco.getPlan("reactcourse", new EpaycoCallback() {
 
 ```java
 epayco.getPlanList(new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
+```
+#### Update
+
+```java
+PlanUpdate plan = new PlanUpdate();
+    plan.setName("Course Java");
+    plan.setDescription("Java advanced");
+    plan.setAmount("35700");
+    plan.setCurrency("COP");
+    plan.setInterval("month");
+    plan.setIntervalCount("1");
+    plan.setTrialDays("0");
+    plan.setIp("127.0.0.2");
+    plan.setIva(5700.0F);
+    plan.setIco(Float.valueOf("0"));
+    plan.setTransactionalLimit(2);
+    plan.setAdditionalChargePercentage(Float.valueOf("0.0"));
+    plan.setAfterPayment("massage after payment");
+epayco.update("androidcourse", plan, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 
@@ -318,20 +358,13 @@ epayco.cancelSubscription("id_subscription", new EpaycoCallback() {
 #### Listar bancos
 
 ```java
-   epayco.getBanks(object : EpaycoCallback {
-     @Throws(JSONException::class)
-     override fun onSuccess(data: JSONObject) {
-        
-        val TextView = findViewById<View>(R.id.textView2 as TextView
-        textView.text = data.toString()
-        System.out.println(data)
-     }
-     override fun onError(error: Exception) {
-        
-        System.out.println("Error")
-        System.out.println("Exception")
-     }
-   })
+ epayco.getBanks(new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {}
+
+    @Override
+    public void onError(Exception error) {}
+});
 ```
 
 #### Create

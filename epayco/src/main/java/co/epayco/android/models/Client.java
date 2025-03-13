@@ -3,7 +3,7 @@ package co.epayco.android.models;
 
 public class Client {
 
-    String tokenId, name, email, phone;
+    String tokenId, name, email, phone, address,city;
     String franchise;
     String mask;
     String customer_id;
@@ -17,6 +17,8 @@ public class Client {
             String name,
             String email,
             String phone,
+            String address,
+            String city,
             String franchise,
             String mask,
             String customer_id,
@@ -27,6 +29,8 @@ public class Client {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.address = address;
+        this.city = city;
         this.defaultCard = defaultCard;
     }
 
@@ -62,6 +66,22 @@ public class Client {
         this.phone = phone;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public Boolean getDefaultCard() {
         return defaultCard;
     }
@@ -85,7 +105,7 @@ public class Client {
         this.mask = mask;
     }
 
-        public String getCustomer_id() {
+    public String getCustomer_id() {
         return customer_id;
     }
 
