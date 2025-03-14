@@ -9,9 +9,11 @@ import co.epayco.android.models.Cash;
 import co.epayco.android.models.Charge;
 import co.epayco.android.models.ChargeSub;
 import co.epayco.android.models.Client;
+import co.epayco.android.models.ClientList;
 import co.epayco.android.models.Daviplata;
 import co.epayco.android.models.DaviplataConfirm;
 import co.epayco.android.models.Plan;
+import co.epayco.android.models.PlanUpdate;
 import co.epayco.android.models.Pse;
 import co.epayco.android.models.Safetypay;
 import co.epayco.android.models.Subscription;
@@ -40,6 +42,17 @@ public class EpaycoNetworkUtils {
             clientParams.put("email", client.getEmail());
             clientParams.put("phone", client.getPhone());
             clientParams.put("default", client.getDefaultCard());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return clientParams.toString();
+    }
+
+    public static String hashMapFromCLients(ClientList clients) {
+        JSONObject clientParams = new JSONObject();
+        try {
+            clientParams.put("page", clients.getPage());
+            clientParams.put("perPage", clients.getPerPage());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -93,6 +106,86 @@ public class EpaycoNetworkUtils {
             planParams.put("interval", plan.getInterval());
             planParams.put("interval_count", plan.getIntervalCount());
             planParams.put("trial_days", plan.getTrialDays());
+
+            if (!plan.getIp().isEmpty()) {
+                planParams.put("ip", plan.getIp());
+            }
+            if (plan.getIva().intValue()>0) {
+                planParams.put("iva", plan.getIva());
+            }
+            if (plan.getIco().intValue()>0) {
+                planParams.put("ico", plan.getIco());
+            }
+            if (!plan.getPlanLink().isEmpty()) {
+                planParams.put("planLink", plan.getPlanLink());
+            }
+            if (!plan.getGreetMessage().isEmpty()) {
+                planParams.put("greetMessage", plan.getGreetMessage());
+            }
+            if (!plan.getLinkExpirationDate().isEmpty()) {
+                planParams.put("linkExpirationDate", plan.getLinkExpirationDate());
+            }
+            if (!plan.getSubscriptionLimit().isEmpty()) {
+                planParams.put("subscriptionLimit", plan.getSubscriptionLimit());
+            }
+            if (!plan.getImgUrl().isEmpty()) {
+                planParams.put("imgUrl", plan.getImgUrl());
+            }
+            if (plan.getDiscountValue().intValue()>0) {
+                planParams.put("discountValue", plan.getDiscountValue());
+            }
+            if (plan.getDiscountPercentage() > 0 ) {
+                planParams.put("discountPercentage", plan.getDiscountPercentage());
+            }
+            if (plan.getTransactionalLimit() >0) {
+                planParams.put("transactionalLimit", plan.getTransactionalLimit());
+            }
+            if (plan.getAdditionalChargePercentage() >0) {
+                planParams.put("additionalChargePercentage", plan.getAdditionalChargePercentage());
+            }
+            if (plan.getFirstPaymentAdditionalCost() >0) {
+                planParams.put("firstPaymentAdditionalCost", plan.getFirstPaymentAdditionalCost());
+            }
+            if (!plan.getAfterPayment().isEmpty()) {
+                planParams.put("afterPayment", plan.getAfterPayment());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return planParams.toString();
+    }
+
+    public static String hashMapFromPlanUpdate(PlanUpdate plan) {
+        JSONObject planParams = new JSONObject();
+        try {
+            planParams.put("name", plan.getName());
+            planParams.put("description", plan.getDescription());
+            planParams.put("amount", plan.getAmount());
+            planParams.put("currency", plan.getCurrency());
+            planParams.put("interval", plan.getInterval());
+            planParams.put("interval_count", plan.getIntervalCount());
+            planParams.put("trial_days", plan.getTrialDays());
+
+            if (!plan.getIp().isEmpty()) {
+                planParams.put("ip", plan.getIp());
+            }
+            if (plan.getIva().intValue()>0) {
+                planParams.put("iva", plan.getIva());
+            }
+            if (plan.getIco().intValue()>0) {
+                planParams.put("ico", plan.getIco());
+            }
+            if (plan.getTransactionalLimit() >0) {
+                planParams.put("transactionalLimit", plan.getTransactionalLimit());
+            }
+            if (plan.getAdditionalChargePercentage() >0) {
+                planParams.put("additionalChargePercentage", plan.getAdditionalChargePercentage());
+            }
+            if (!plan.getAfterPayment().isEmpty()) {
+                planParams.put("afterPayment", plan.getAfterPayment());
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
