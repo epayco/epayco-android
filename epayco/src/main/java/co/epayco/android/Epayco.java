@@ -39,7 +39,7 @@ import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSub;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCancel;
 import static co.epayco.android.util.EpaycoNetworkUtils.hashMapFromSubCharge;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -1301,49 +1301,46 @@ public class Epayco {
      * @param token  data user token
      * @param callback response request api
      */
-    public void get(final String urlString,final String token,final EpaycoCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection = null;
-                try {
-                    // Configurar la URL de destino
-                    URL url = new URL(urlString);
+    public void get(String urlString, String token, EpaycoCallback callback) {
+        new Thread(() -> {
+            HttpURLConnection connection = null;
+            try {
+                // Configurar la URL de destino
+                URL url = new URL(urlString);
 
-                    // Abrir la conexión HTTP
-                    connection = (HttpURLConnection) url.openConnection();
+                // Abrir la conexión HTTP
+                connection = (HttpURLConnection) url.openConnection();
 
-                    // Configurar la conexión
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Content-Type", "application/json");
-                    connection.setRequestProperty("Authorization", "Bearer "+token);
-                    connection.setRequestProperty("type", "sdk-jwt ");
-                    // Obtener la respuesta
-                    int responseCode = connection.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        // Leer la respuesta
-                        try (BufferedReader br = new BufferedReader(
-                                new InputStreamReader(connection.getInputStream()))) {
-                            StringBuilder data = new StringBuilder();
-                            String responseLine;
-                            while ((responseLine = br.readLine()) != null) {
-                                data.append(responseLine.trim());
-                            }
-                            JSONObject response = new JSONObject(new String(data));
-                            // Llamar al método onSuccess del Callback
-                            callback.onSuccess(response);
+                // Configurar la conexión
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Authorization", "Bearer "+token);
+                connection.setRequestProperty("type", "sdk-jwt ");
+                // Obtener la respuesta
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Leer la respuesta
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()))) {
+                        StringBuilder data = new StringBuilder();
+                        String responseLine;
+                        while ((responseLine = br.readLine()) != null) {
+                            data.append(responseLine.trim());
                         }
-                    } else {
-                        // Llamar al método onError del Callback en caso de error
-                        callback.onError(new Exception("HTTP Error: " + responseCode));
+                        JSONObject response = new JSONObject(new String(data));
+                        // Llamar al método onSuccess del Callback
+                        callback.onSuccess(response);
                     }
-                } catch (Exception e) {
-                    // Llamar al método onError del Callback en caso de excepción
-                    callback.onError(e);
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
+                } else {
+                    // Llamar al método onError del Callback en caso de error
+                    callback.onError(new Exception("HTTP Error: " + responseCode));
+                }
+            } catch (Exception e) {
+                // Llamar al método onError del Callback en caso de excepción
+                callback.onError(e);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
                 }
             }
         }).start();
@@ -1356,60 +1353,55 @@ public class Epayco {
      * @param token      data user token
      * @param callback response request api
      */
-    public static void post(final String urlString,final String jsonBody,final String token,final EpaycoCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public static void post(String urlString, String jsonBody, String token, EpaycoCallback callback) {
+        new Thread(() -> {
+            HttpURLConnection connection = null;
+            try {
+                // Configurar la URL de destino
+                URL url = new URL(urlString);
 
-                HttpURLConnection connection = null;
-                try {
-                    // Configurar la URL de destino
-                    URL url = new URL(urlString);
+                // Abrir la conexión HTTP
+                connection = (HttpURLConnection) url.openConnection();
 
-                    // Abrir la conexión HTTP
-                    connection = (HttpURLConnection) url.openConnection();
+                // Configurar la conexión
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Authorization", "Bearer "+token);
+                connection.setRequestProperty("type", "sdk-jwt ");
+                connection.setDoOutput(true);
 
-                    // Configurar la conexión
-                    connection.setRequestMethod("POST");
-                    connection.setRequestProperty("Content-Type", "application/json");
-                    connection.setRequestProperty("Authorization", "Bearer "+token);
-                    connection.setRequestProperty("type", "sdk-jwt ");
-                    connection.setDoOutput(true);
-
-                    // Obtener el flujo de salida y escribir el cuerpo JSON
-                    try (OutputStream os = connection.getOutputStream()) {
-                        byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
-                        os.write(input, 0, input.length);
-                    }
-
-                    // Obtener la respuesta
-                    int responseCode = connection.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        // Leer la respuesta
-                        try (BufferedReader br = new BufferedReader(
-                                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                            StringBuilder data = new StringBuilder();
-                            String responseLine;
-                            while ((responseLine = br.readLine()) != null) {
-                                data.append(responseLine.trim());
-                            }
-                            JSONObject response = new JSONObject(new String(data));
-                            // Llamar al método onSuccess del Callback
-                            callback.onSuccess(response);
-                        }
-                    } else {
-                        // Llamar al método onError del Callback en caso de error
-                        callback.onError(new IOException("HTTP Error: " + responseCode));
-                    }
-                } catch (Exception e) {
-                    // Llamar al método onError del Callback en caso de excepción
-                    callback.onError(e);
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
+                // Obtener el flujo de salida y escribir el cuerpo JSON
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
                 }
 
+                // Obtener la respuesta
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Leer la respuesta
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                        StringBuilder data = new StringBuilder();
+                        String responseLine;
+                        while ((responseLine = br.readLine()) != null) {
+                            data.append(responseLine.trim());
+                        }
+                        JSONObject response = new JSONObject(new String(data));
+                        // Llamar al método onSuccess del Callback
+                        callback.onSuccess(response);
+                    }
+                } else {
+                    // Llamar al método onError del Callback en caso de error
+                    callback.onError(new IOException("HTTP Error: " + responseCode));
+                }
+            } catch (Exception e) {
+                // Llamar al método onError del Callback en caso de excepción
+                callback.onError(e);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
         }).start();
     }
