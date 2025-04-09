@@ -118,7 +118,10 @@ epayco.getCustomer("id_customer", new EpaycoCallback() {
 #### List
 
 ```java
-epayco.getCustomerList(new EpaycoCallback() {
+ClientList client = new ClientList();
+client.setPage("6");
+client.setPerPage("6 epayco");
+epayco.getCustomerList(client, new EpaycoCallback() {
     @Override
     public void onSuccess(JSONObject data) throws JSONException {}
 
@@ -188,22 +191,34 @@ epayco.addNewToken(client, new EpaycoCallback() {
 ```java
 Plan plan = new Plan();
 
-plan.setIdPlan("reactcourse");
-plan.setName("Course React");
-plan.setDescription("Course react advanced");
+plan.setIdPlan("reactcourse_001233");
+plan.setName("Course React v02");
+plan.setDescription("Course react advanced v02");
 plan.setAmount("30000");
 plan.setCurrency("COP");
 plan.setInterval("month");
 plan.setIntervalCount("1");
-plan.setTrialDays("0");
+plan.setTrialDays("30");
+plan.setPlanLink("https://ejemplo.com/plan");
+plan.setGreetMessage("Gracias por preferirnos");
+plan.setLinkExpirationDate("2025-03-11");
+plan.setSubscriptionLimit("10");
+plan.setDiscountValue(5000.0f);
+plan.setDiscountPercentage(19);
+plan.setFirstPaymentAdditionalCost(45700.0f);
 
 epayco.createPlan(plan, new EpaycoCallback() {
     @Override
-    public void onSuccess(JSONObject data) throws JSONException {}
+    public void onSuccess(JSONObject data) throws JSONException {
+        Log.d("epayco", data.toString());
+    }
 
     @Override
-    public void onError(Exception error) {}
+    public void onError(Exception error) {
+        Log.d("epaycoError", error.getMessage());
+    }
 });
+
 ```
 
 #### Retrieve
@@ -228,6 +243,34 @@ epayco.getPlanList(new EpaycoCallback() {
     @Override
     public void onError(Exception error) {}
 });
+```
+
+#### Update
+
+```java
+PlanUpdate plan = new PlanUpdate();
+plan.setName("Course React v02");
+plan.setDescription("Course react advanced v02");
+plan.setAmount("30000");
+plan.setCurrency("COP");
+plan.setInterval("month");
+plan.setIntervalCount("1");
+plan.setTrialDays("0");
+plan.setIp("127.0.0.1");
+plan.setAfterPayment("afterPayment");
+
+epayco.updatePlan("reactcourse_001233", plan, new EpaycoCallback() {
+    @Override
+    public void onSuccess(JSONObject data) throws JSONException {
+        Log.d("epayco", data.toString());
+    }
+
+    @Override
+    public void onError(Exception error) {
+        Log.d("epaycoError", error.getMessage());
+    }
+});
+
 ```
 
 ### Subscriptions
