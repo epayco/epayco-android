@@ -1424,16 +1424,6 @@ public class Epayco {
                     if (connection != null) {
                         connection.disconnect();
                     }
-                } else {
-                    // Llamar al método onError del Callback en caso de error
-                    callback.onError(new Exception("HTTP Error: " + responseCode));
-                }
-            } catch (Exception e) {
-                // Llamar al método onError del Callback en caso de excepción
-                callback.onError(e);
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
                 }
             }
         }).start();
@@ -1446,28 +1436,31 @@ public class Epayco {
      * @param token      data user token
      * @param callback response request api
      */
-    public static void post(String urlString, String jsonBody, String token, EpaycoCallback callback) {
-        new Thread(() -> {
-            HttpURLConnection connection = null;
-            try {
-                // Configurar la URL de destino
-                URL url = new URL(urlString);
+    public static void post(final String urlString,final String jsonBody,final String token,final EpaycoCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                // Abrir la conexión HTTP
-                connection = (HttpURLConnection) url.openConnection();
+                HttpURLConnection connection = null;
+                try {
+                    // Configurar la URL de destino
+                    URL url = new URL(urlString);
 
-                // Configurar la conexión
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("Authorization", "Bearer "+token);
-                connection.setRequestProperty("type", "sdk-jwt ");
-                connection.setDoOutput(true);
+                    // Abrir la conexión HTTP
+                    connection = (HttpURLConnection) url.openConnection();
 
-                // Obtener el flujo de salida y escribir el cuerpo JSON
-                try (OutputStream os = connection.getOutputStream()) {
-                    byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
-                    os.write(input, 0, input.length);
-                }
+                    // Configurar la conexión
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json");
+                    connection.setRequestProperty("Authorization", "Bearer "+token);
+                    connection.setRequestProperty("type", "sdk-jwt ");
+                    connection.setDoOutput(true);
+
+                    // Obtener el flujo de salida y escribir el cuerpo JSON
+                    try (OutputStream os = connection.getOutputStream()) {
+                        byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                        os.write(input, 0, input.length);
+                    }
 
                     // Obtener la respuesta
                     int responseCode = connection.getResponseCode();
@@ -1509,17 +1502,8 @@ public class Epayco {
                     if (connection != null) {
                         connection.disconnect();
                     }
-                } else {
-                    // Llamar al método onError del Callback en caso de error
-                    callback.onError(new IOException("HTTP Error: " + responseCode));
                 }
-            } catch (Exception e) {
-                // Llamar al método onError del Callback en caso de excepción
-                callback.onError(e);
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+
             }
         }).start();
     }
