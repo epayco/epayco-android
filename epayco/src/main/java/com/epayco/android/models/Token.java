@@ -1,5 +1,6 @@
 package com.epayco.android.models;
 
+
 import androidx.annotation.StringDef;
 
 import java.lang.annotation.Retention;
