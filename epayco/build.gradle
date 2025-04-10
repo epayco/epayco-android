@@ -45,11 +45,11 @@ afterEvaluate {
                 }
 
                 groupId = 'com.github.epayco'
-                artifactId = 'epayco-sdk'
+                artifactId = 'epayco-android'
                 version = '3.16.0'
 
                 pom {
-                    name = 'epayco-sdk'
+                    name = 'epayco-android'
                     description = 'SDK Android de Epayco'
                 }
             }
