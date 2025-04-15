@@ -1,5 +1,4 @@
-# Epayco Android  
-=====
+## Epayco Android  
 
 ## Description
 
@@ -732,14 +731,12 @@ Below are the steps to integrate the Epayco SDK into your Android application, i
 ![Step 1](ImgTutorialAndroid/Captura%201.png)
 
 ### Step 2: Add the `epayco` module in `settings.gradle`
-![Step 2](ImgTutorialAndroid/Captura%202.png)
+![Step 2](ImgTutorialAndroid/Captura%203.png)
 
 ### Step 3: Add dependency in the app's `build.gradle`
-![Step 3](ImgTutorialAndroid/Captura%203.png)
+![Step 3](ImgTutorialAndroid/Captura%204.png)
 
-### Step 4: Import the main Epayco class
-![Step 4](ImgTutorialAndroid/Captura%204.png)
+### Step 4: Import the main Epayco class and import the services from `models`
+![Step 4](ImgTutorialAndroid/Captura%205.png)
 
-### Step 5: Import the services from `models`
-![Step 5](ImgTutorialAndroid/Captura%205.png)
 
