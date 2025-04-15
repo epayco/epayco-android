@@ -724,7 +724,7 @@ epayco.createSafetypay(safetypay, new EpaycoCallback() {
     public void onError(Exception error) {}
 });
 ```
-## 🖼️ Visual Integration Guide
+## Visual Integration Guide
 
 Below are the steps to integrate the Epayco SDK into your Android application, illustrated with screenshots:
 
