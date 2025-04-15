@@ -1,33 +1,46 @@
-Epayco android
+# Epayco Android  
 =====
 
 ## Description
 
-Epayco-android facilitates the collection of credit card information without having sensitive data on your server.
-
-These epayco methods can be used to generate data in your android application. If you have an application that charges by credit card, you must use the ePayco-android library to prevent sensitive information from remaining on your server.
+**Epayco-android** 
+facilitates the collection of credit card information without storing sensitive data on your server.  
+These Epayco methods can be used to generate data in your Android application.  
+If you have an app that processes credit card payments, you should use the **epayco-android** library to ensure sensitive data does not remain on your server.
 
 ## Installation
 
-Add maven https://jitpack.io to repositories
+1. Make sure to create your Android project using **Java** and **Groovy DSL** as the Gradle configuration language.  
+2. Download the plugin from: [https://github.com/epayco/epayco-android](https://github.com/epayco/epayco-android)  
+3. Unzip the downloaded file and copy the folder named `epayco`.  
+4. Go to the root of your Android project and paste the `epayco` folder there. This completes the plugin installation.  
 
-```gradle
-allprojects {
-  repositories {
-    ......
-    maven { url "https://jitpack.io" }
-  }
-}
-```
+## Configuration
 
-Add the dependency
+Once you have the `epayco` folder in your project, follow these steps to ensure Android Studio recognizes it:
 
-```gradle
+1. In the root of your project, open the **`settings.gradle`** file and at the bottom, add the following line:  
+   ```groovy
+   include ':app', ':epayco'
+   ```
+   Then sync your project by clicking **Sync Now** or going to `File > Sync Project with Gradle Files`.
 
-  implementation 'com.github.epayco:epayco-android:v3.13.0'
+2. Open the **`build.gradle`** file inside the **app** folder and in the `dependencies` section, add:
+   ```groovy
+   implementation project(':epayco')
+   ```
+   Sync your project again.
 
+3. Your project is now ready to consume the SDK services.
 
-```
+4. In the **`MainActivity`** file of the `app` folder (or any class where you want to run tests), import the main Epayco class:
+   ```java
+   import com.epayco.android.Epayco;
+   ```
+   Then you can import the specific services you want to use like this:
+   ```java
+   import com.epayco.android.models.[ServiceToConsume];
+   ```
 
 ## Usage
 
@@ -711,3 +724,22 @@ epayco.createSafetypay(safetypay, new EpaycoCallback() {
     public void onError(Exception error) {}
 });
 ```
+## 🖼️ Visual Integration Guide
+
+Below are the steps to integrate the Epayco SDK into your Android application, illustrated with screenshots:
+
+### Step 1: Project structure
+![Step 1](ImgTutorialAndroid/Captura%201.png)
+
+### Step 2: Add the `epayco` module in `settings.gradle`
+![Step 2](ImgTutorialAndroid/Captura%202.png)
+
+### Step 3: Add dependency in the app's `build.gradle`
+![Step 3](ImgTutorialAndroid/Captura%203.png)
+
+### Step 4: Import the main Epayco class
+![Step 4](ImgTutorialAndroid/Captura%204.png)
+
+### Step 5: Import the services from `models`
+![Step 5](ImgTutorialAndroid/Captura%205.png)
+
