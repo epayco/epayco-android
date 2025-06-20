@@ -25,8 +25,11 @@ import com.epayco.android.util.DateUtils;
 import com.epayco.android.util.EpaycoCallback;
 import com.epayco.android.util.Util;
 
+<<<<<<< HEAD
 import static com.epayco.android.Config.BASE_URL_SDK;
 import static com.epayco.android.Config.SECURE_URL_SDK;
+=======
+>>>>>>> 57f1e27b38feb39a5d6a596b7da185adefa80208
 import static com.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLient;
 import static com.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardDefault;
 import static com.epayco.android.util.EpaycoNetworkUtils.hashMapFromCLientCardNew;
@@ -63,12 +66,18 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
+<<<<<<< HEAD
 
     public static final String BASE_URL = Config.BASE_URL_SDK;
     public static final String BASE_URL_SECURE =  Config.SECURE_URL_SDK  + Config.ENTORNO_SDK ;
     public static final String BASE_URL_APIFY = Config.BASE_URL_APIFY;
 
 
+=======
+    public static final String BASE_URL = "https://api.secure.epayco.io";
+    private static final String BASE_URL_SECURE = "https://secure2.epayco.io/restpagos";
+    public static final String BASE_URL_APIFY = "https://apify.epayco.io";
+>>>>>>> 57f1e27b38feb39a5d6a596b7da185adefa80208
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -992,7 +1001,11 @@ public class Epayco {
                 String Base = base(false);
                 if(token_bearer != null){
                     try {
+<<<<<<< HEAD
                         get(BASE_URL_SECURE   + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
+=======
+                        get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
+>>>>>>> 57f1e27b38feb39a5d6a596b7da185adefa80208
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1039,9 +1052,13 @@ public class Epayco {
                 String testStr = apiKey + "&test=" + strTest;
                 if(token_bearer != null){
                     try {
+<<<<<<< HEAD
                         // get(Base + "/pse/bancos.json?public_key=" + testStr,null,token_bearer,callback);
                         get(BASE_URL_SECURE + "/pse/bancos.json?public_key=" + testStr, null, token_bearer, callback);
 
+=======
+                        get(Base + "/pse/bancos.json?public_key=" + testStr,null,token_bearer,callback);
+>>>>>>> 57f1e27b38feb39a5d6a596b7da185adefa80208
                     } catch (Exception e) {
                         callback.onError(e);
                     }
