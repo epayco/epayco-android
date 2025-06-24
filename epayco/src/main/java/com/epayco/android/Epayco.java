@@ -60,9 +60,10 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static final String BASE_URL = "https://api.secure.epayco.io";
-    private static final String BASE_URL_SECURE = "https://secure2.epayco.io/restpagos";
-    public static final String BASE_URL_APIFY = "https://apify.epayco.io";
+    public static final String BASE_URL = "https://eks-subscription-api-lumen-service.epayco.io";
+    public static final String BASE_URL_SECURE = "https://eks-rest-pagos-service.epayco.io";
+    public static final String ENTORNO = "/restpagos";
+    public static final String BASE_URL_APIFY = "https://eks-apify-service.epayco.io";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -939,12 +940,11 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
-                String Base = base(false);
+                String Base = base(true);
                 String jsonBody = hashMapFromPse(pse, buildOptions());
                 if(token_bearer != null){
                     try {
-                        post(BASE_URL_SECURE + "/pagos/debitos.json", jsonBody,token_bearer,callback);
-                        //post("https://webhook.site/6fe14390-858a-4e38-972d-d8e49f6be366", jsonBody,token_bearer,callback);
+                        post(  Base + "/pagos/debitos.json", jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1023,7 +1023,7 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
-                String Base = base(false);
+                String Base = base(true);
                 String strTest = "";
                 if(test){
                     strTest= "1";
@@ -1081,7 +1081,7 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
-                String Base = base(false);
+                String Base = base(true);
                 String jsonBody = hashMapFromCash(cash, buildOptions());
                 String url = null;
                 switch (cash.getType()) {
@@ -1105,7 +1105,7 @@ public class Epayco {
                 }
                 if(token_bearer != null){
                     try {
-                        post(BASE_URL_SECURE + url, jsonBody,token_bearer,callback);
+                        post(Base + url, jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1233,12 +1233,11 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("token");
-                String Base = base(false);
+                String BaseApi = baseApify(true);
                 String jsonBody = hashMapFromDaviplata(daviplata);
                 if(token_bearer != null){
                     try {
-                        post(BASE_URL_APIFY + "/payment/process/daviplata", jsonBody,token_bearer,callback);
-                        //post( "https://webhook.site/6fe14390-858a-4e38-972d-d8e49f6be366", jsonBody,token_bearer,callback);
+                        post(BaseApi  + "/payment/process/daviplata", jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1277,11 +1276,11 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
-                String Base = base(false);
+                String BaseApi = baseApify(true);
                 String jsonBody = hashMapFromDaviplataConfirm(confirm);
                 if(token_bearer != null){
                     try {
-                        post(BASE_URL_APIFY + "/payment/confirm/daviplata", jsonBody,token_bearer,callback);
+                        post( BaseApi + "/payment/confirm/daviplata", jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1323,11 +1322,11 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("token");
-                String Base = base(false);
+                String BaseApi = baseApify(true);
                 String jsonBody = hashMapFromSafetypay(safetypay);
                 if(token_bearer != null){
                     try {
-                        post(BASE_URL_APIFY + "/payment/process/safetypay", jsonBody,token_bearer,callback);
+                        post(BaseApi + "/payment/process/safetypay", jsonBody,token_bearer,callback);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
@@ -1507,11 +1506,19 @@ public class Epayco {
             }
         }).start();
     }
-    public String base(boolean isApi) {
+    public String base (boolean isApi) {
         if (isApi) {
-            return BASE_URL_SECURE;
+            return BASE_URL_SECURE + ENTORNO;
         } else {
             return BASE_URL;
+        }
+    }
+
+    public String baseApify (boolean isApi) {
+        if (isApi) {
+            return BASE_URL_APIFY;
+        } else {
+            return "No se encontro url";
         }
     }
 }
