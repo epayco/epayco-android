@@ -8,5 +8,5 @@ public interface EpaycoCallback {
 
     void onSuccess(JSONObject data) throws JSONException;
 
-    void onError(Exception error);
+    void onError(Exception e);
 }

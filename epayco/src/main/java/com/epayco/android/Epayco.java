@@ -60,10 +60,10 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static final String BASE_URL = "https://eks-subscription-api-lumen-service.epayco.io";
-    public static final String BASE_URL_SECURE = "https://eks-rest-pagos-service.epayco.io";
-    public static final String ENTORNO = "/restpagos";
-    public static final String BASE_URL_APIFY = "https://eks-apify-service.epayco.io";
+    public static final String BASE_URL = System.getenv("BASE_URL_SDK") != null ? System.getenv("BASE_URL_SDK") : "https://eks-subscription-api-lumen-service.epayco.io";
+    public static final String BASE_URL_SECURE = System.getenv("SECURE_URL_SDK") != null ? System.getenv("SECURE_URL_SDK") : "https://eks-rest-pagos-service.epayco.io";
+    public static final String ENTORNO = System.getenv("ENTORNO_SDK") != null ? System.getenv("ENTORNO_SDK") : "/restpagos";
+    public static final String BASE_URL_APIFY = System.getenv("BASE_URL_APIFY") != null ? System.getenv("BASE_URL_APIFY") : "https://eks-apify-service.epayco.io";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
@@ -116,33 +116,47 @@ public class Epayco {
                 try {
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud, Token no encontrado: " + e.getMessage(), e);
                 callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromCard(card);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/v1/tokens", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+                try {
+                    token_bearer = data.getString("bearer_token");
+                    String Base = base(false);
+                    String jsonBody = hashMapFromCard(card);
+                    if (token_bearer != null) {
+                        post(Base + "/v1/tokens", jsonBody, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                                Log.d("epayco", "Respuesta de petición: " + response.toString());
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la solicitud: " + e.getMessage(), e);
+                                callback.onError(e);
+                            }
+                        });
                     }
+                } catch (Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + e.getMessage(), e);
+                    callback.onError(e);
                 }
             }
             @Override
-            public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            public void onError(Exception e) {
+            Log.e("epayco", "Error en crear Token: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            Token.onError(e);
             }
         });
     }
@@ -236,12 +250,13 @@ public class Epayco {
                 try {
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud, cliente no creado: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                 callback.onError(e);
             }
         };
@@ -253,16 +268,27 @@ public class Epayco {
                 String jsonBody = hashMapFromCLient(client);
                 if(token_bearer != null){
                     try {
-                        post(Base + "/payment/v1/customer/create", jsonBody,token_bearer,callback);
+                        post(Base + "/payment/v1/customer/create", jsonBody, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
                     } catch (Exception e) {
+                        Log.e("epayco", "Excepción al crear cliente: " + e.getMessage(), e);
                         callback.onError(e);
                     }
                 }
             }
             @Override
-            public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            public void onError(Exception e) {
+                Log.e("epayco", "Error en autenticación: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                Token.onError(e);
             }
         });
     }
@@ -279,32 +305,46 @@ public class Epayco {
                 try {
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                 callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/payment/v1/customer/" + apiKey + "/" + uid,null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/payment/v1/customer/" + apiKey + "/" + uid, null, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener cliente: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener cliente: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -317,36 +357,50 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromCLients(clients);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/payment/v1/customers/" + apiKey,jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromCLients(clients);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/payment/v1/customers/" + apiKey, jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener lista de clientes: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener lista de clientes: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -360,36 +414,48 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromCLientDelete(client);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/v1/remove/token",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromCLientDelete(client);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/v1/remove/token", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al eliminar token: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al eliminar token: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -403,36 +469,52 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+               
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromCLientCardDefault(client);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/payment/v1/customer/reasign/card/default",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromCLientCardDefault(client);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/payment/v1/customer/reasign/card/default", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al reasignar tarjeta por defecto: " + e.getMessage(), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al reasignar tarjeta por defecto: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -448,14 +530,16 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 try {
+                    Log.d("epayco", "Respuesta exitosa: " + data.toString());
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                 callback.onError(e);
             }
         };
@@ -467,15 +551,27 @@ public class Epayco {
                 String jsonBody = hashMapFromCLientCardNew(client);
                 if(token_bearer != null){
                     try {
-                        post(Base + "/v1/customer/add/token",jsonBody,token_bearer,callback);
+                        post(Base + "/v1/customer/add/token", jsonBody, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                               
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
                     } catch (Exception e) {
+                        Log.e("epayco", "Excepción al agregar nuevo token: " + e.getMessage(), e);
                         callback.onError(e);
                     }
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+                Log.e("epayco", "Error en autenticación al agregar nuevo token: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
             }
         });
@@ -506,24 +602,37 @@ public class Epayco {
                 callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromPlan(plan);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/recurring/v1/plan/create",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromPlan(plan);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/recurring/v1/plan/create", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al crear plan: " + e.getMessage(), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al crear plan: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -537,35 +646,49 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/recurring/v1/plan/" + apiKey + "/" + uid,null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/recurring/v1/plan/" + apiKey + "/" + uid, null, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error al obtener plan: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener plan: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener plan: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -574,77 +697,104 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+               
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromEmpty();
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid,jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromEmpty();
+            if (token_bearer != null) {
+                try {
+                post(Base + "/recurring/v1/plan/remove/" + apiKey + "/" + uid, jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    Log.d("epayco", "Respuesta exitosa: " + response.toString());
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al eliminar plan: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al eliminar plan: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
 
     /**
      * Return list plan
-     * @param callback    response request api
+     *
+     * @param callback response request api
      */
-    public void getPlanList(@NonNull final String uid, @NonNull final EpaycoCallback callback) {
+   public void getPlanList(@NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/recurring/v1/plans/",null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/recurring/v1/plans?public_key=", null, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error al obtener lista de planes: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener lista de planes: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener lista de planes: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -654,39 +804,52 @@ public class Epayco {
      * @param plan        data model plan
      * @param callback    response request api
      */
-    public void updatePlan(@NonNull final String uid,@NonNull final PlanUpdate plan, @NonNull final EpaycoCallback callback) {
+    public void updatePlan(@NonNull final String uid, @NonNull final PlanUpdate plan, @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 try {
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                 callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
                 String Base = base(false);
                 String jsonBody = hashMapFromPlanUpdate(plan);
-                if(token_bearer != null){
+                if (token_bearer != null) {
                     try {
-                        post(Base + "/recurring/v1/plan/edit/"+uid,jsonBody,token_bearer,callback);
+                        post(Base + "/recurring/v1/plan/edit/" + uid, jsonBody, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                                Log.d("epayco", "Respuesta de actualización de plan: " + response.toString());
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la actualización de plan: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
                     } catch (Exception e) {
+                        Log.e("epayco", "Excepción al actualizar plan: " + e.getMessage(), e);
                         callback.onError(e);
                     }
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+                Log.e("epayco", "Error en autenticación al actualizar plan: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
             }
         });
@@ -707,36 +870,49 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromSub(sub);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/recurring/v1/subscription/create",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromSub(sub);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/recurring/v1/subscription/create", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al crear suscripción: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al crear suscripción: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -750,35 +926,50 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/recurring/v1/subscription/" + uid + "/" + apiKey,null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/recurring/v1/subscription/" + uid + "/" + apiKey, null, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener suscripción: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener suscripción: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -791,35 +982,51 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/recurring/v1/subscriptions/" + apiKey,null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            if (token_bearer != null) {
+                try {
+                get(Base + "/recurring/v1/subscriptions/" + apiKey, null, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener lista de suscripciones: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al obtener lista de suscripciones: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -833,36 +1040,49 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromSubCharge(sub);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/payment/v1/charge/subscription/create",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromSubCharge(sub);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/payment/v1/charge/subscription/create", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al hacer el cargo a la suscripción: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al hacer cargo a suscripción: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -877,36 +1097,50 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+            
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                String jsonBody = hashMapFromSubCancel(uid);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/recurring/v1/subscription/cancel",jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(false);
+            String jsonBody = hashMapFromSubCancel(uid);
+            if (token_bearer != null) {
+                try {
+                post(Base + "/recurring/v1/subscription/cancel", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la cancelación de suscripción: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al cancelar suscripción: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al cancelar suscripción: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -925,35 +1159,50 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 try {
+                   
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                 callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(true);
-                String jsonBody = hashMapFromPse(pse, buildOptions());
-                if(token_bearer != null){
-                    try {
-                        post(  Base + "/pagos/debitos.json", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(true);
+            String jsonBody = hashMapFromPse(pse, buildOptions());
+            if (token_bearer != null) {
+                try {
+                post(Base + "/pagos/debitos.json", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                    callback.onSuccess(response);
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al crear transacción PSE: " + e.getMessage(), e);
+                callback.onError(e);
                 }
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al crear transacción PSE: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -967,34 +1216,48 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+              
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
         new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
-                String Base = base(false);
-                if(token_bearer != null){
+                String Base = base(true);
+                if (token_bearer != null) {
                     try {
-                        get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
+                        get(Base + "/pse/transactioninfomation.json?transactionID=" + uid + "&public_key=" + apiKey, null, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                              
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
                     } catch (Exception e) {
+                        Log.e("epayco", "Excepción al obtener transacción PSE: " + e.getMessage(), e);
                         callback.onError(e);
                     }
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+                Log.e("epayco", "Error en autenticación al obtener transacción PSE: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
             }
         });
@@ -1006,43 +1269,53 @@ public class Epayco {
     public void getBanks( @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
-            public void onSuccess(JSONObject data) throws JSONException {
+            public void onSuccess(JSONObject data) {
                 try {
                     callback.onSuccess(data);
+
                 } catch (JSONException e) {
-                    callback.onError(e);
-                }
-            }
-            @Override
-            public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
-            }
-        };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
-            @Override
-            public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(true);
-                String strTest = "";
-                if(test){
-                    strTest= "1";
-                }else{
-                    strTest= "2";
-                }
-                String testStr = apiKey + "&test=" + strTest;
-                if(token_bearer != null){
-                    try {
-                        get(Base + "/pse/bancos.json?public_key=" + testStr,null,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
-                    }
+                    Log.e("epayco", "Error al formatear JSON", e);
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+                Log.e("epayco", "Error al obtener bancos", error);
+            }
+        };
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+            token_bearer = data.getString("bearer_token");
+//            Log.i("epayco", "Token bearer: " + token_bearer);
+            String Base = base(true);
+//            String Base = baseApify(true);
+            String strTest = test ? "1" : "2";
+            String testStr = apiKey + "&test=" + strTest;
+            if (token_bearer != null) {
+                try {
+                get(Base + "/pse/bancos.json?public_key=" + testStr, null, token_bearer, new EpaycoCallback() {
+
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                  
+                    callback.onSuccess(response);
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud de bancos: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al obtener bancos: " + e.getMessage(), e);
+                callback.onError(e);
+                }
+            }
+            }
+            @Override
+            public void onError(Exception error) {
+            Log.e("epayco", "Error en autenticación al obtener bancos: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -1065,74 +1338,91 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+               
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("bearer_token");
-                String Base = base(true);
-                String jsonBody = hashMapFromCash(cash, buildOptions());
-                String url = null;
-                switch (cash.getType()) {
-                    case "efecty":
-                        url = "/v2/efectivo/efecty";
-                        break;
-                    case "gana":
-                        url = "/v2/efectivo/gana";
-                        break;
-                    case "redservi":
-                        url = "/v2/efectivo/redservi";
-                        break;
-                    case "puntored":
-                        url = "/v2/efectivo/puntored";
-                        break;
-                    case "sured":
-                        url = "/v2/efectivo/sured";
-                        break;
-                    default:
-                        System.out.println("error payment");
-                }
-                if(token_bearer != null){
-                    try {
-                        post(Base + url, jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("bearer_token");
+            String Base = base(true);
+            String jsonBody = hashMapFromCash(cash, buildOptions());
+            String url = null;
+            switch (cash.getType()) {
+                case "efecty":
+                url = "/v2/efectivo/efecty";
+                break;
+                case "gana":
+                url = "/v2/efectivo/gana";
+                break;
+                case "redservi":
+                url = "/v2/efectivo/redservi";
+                break;
+                case "puntored":
+                url = "/v2/efectivo/puntored";
+                break;
+                case "sured":
+                url = "/v2/efectivo/sured";
+                break;
+                default:
+                Log.e("epayco", "Método de pago en efectivo no soportado: " + cash.getType());
+                return;
+            }
+            if (token_bearer != null) {
+                try {
+                post(Base + url, jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al crear transacción cash: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación al crear transacción cash: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
 
-    public void getReferencePayment(@NonNull final String uid, @NonNull final EpaycoCallback callback) {
+     public void getReferencePayment(@NonNull final String uid, @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+              
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
         new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
@@ -1140,17 +1430,29 @@ public class Epayco {
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
                 String Base = base(false);
-                if(token_bearer != null){
+                if (token_bearer != null) {
                     try {
-                        get(Base + "/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey,null,token_bearer,callback);
+                        get(Base + "/transaction/response.json?ref_payco=" + uid + "&public_key=" + apiKey, null, token_bearer, new EpaycoCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                                Log.d("epayco", "Respuesta exitosa: " + response.toString());
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la respuesta: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
                     } catch (Exception e) {
+                        Log.e("epayco", "Excepción al obtener referencia de pago: " + e.getMessage(), e);
                         callback.onError(e);
                     }
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+                Log.e("epayco", "Error en autenticación al obtener referencia de pago: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
             }
         });
@@ -1171,38 +1473,64 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+               
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthService(apiKey,privateKey,new EpaycoCallback(){
+        try {
+            new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 token_bearer = data.getString("bearer_token");
                 String Base = base(false);
                 String jsonBody = hashMapFromCharge(charge);
-                if(token_bearer != null){
-                    try {
-                        post(Base + "/payment/v1/charge/create", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
+                if (token_bearer != null) {
+                try {
+                    post(Base + "/payment/v1/charge/create", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                       
+                        if (response.has("status") && response.getBoolean("status")) {
+                        callback.onSuccess(data);
+                        } else {
+                        Log.e("epayco", "Respuesta con error: " + response.toString());
+                        }
+                        callback.onSuccess(response);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
                         callback.onError(e);
                     }
+                    });
+                } catch (Exception e) {
+                    Log.e("epayco", "Excepción al crear cargo: " + e.getMessage(), e);
+                    callback.onError(e);
+                }
                 }
             }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+                Log.e("epayco", "Error en autenticación al crear pago: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
             }
-        });
+            });
+        } catch (Exception ex) {
+            Log.e("epayco", "Excepción general en createCharge: " + ex.getMessage(), ex);
+            callback.onError(ex);
+        }
     }
 
     /*****************************
@@ -1218,35 +1546,63 @@ public class Epayco {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
                 try {
+                   
                     callback.onSuccess(data);
                 } catch (JSONException e) {
+                    Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
                     callback.onError(e);
                 }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
-            }
-        };
-        new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
-            @Override
-            public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("token");
-                String BaseApi = baseApify(true);
-                String jsonBody = hashMapFromDaviplata(daviplata);
-                if(token_bearer != null){
-                    try {
-                        post(BaseApi  + "/payment/process/daviplata", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
+                try {
+                    System.err.println("Error en la solicitud: " + e.getMessage());
+                    if (e instanceof IOException) {
+                        Log.e("epayco", "Error de red o servidor: " + e.getMessage(), e);
+                        callback.onError(new Exception("Error de red o servidor: " + e.getMessage(), e));
+                    } else if (e instanceof JSONException) {
+                        Log.e("epayco", "Error procesando la respuesta del servidor: " + e.getMessage(), e);
+                        callback.onError(new Exception("Error procesando la respuesta del servidor: " + e.getMessage(), e));
+                    } else {
+                        Log.e("epayco", "Error desconocido: " + e.getMessage(), e);
                         callback.onError(e);
                     }
+                } catch (Exception ex) {
+                    Log.e("epayco", "Excepción en onError: " + ex.getMessage(), ex);
+                    callback.onError(ex);
+                }
+            }
+        };
+        new Authentication().AuthServiceApify(apiKey, privateKey, new EpaycoCallback() {
+            @Override
+            public void onSuccess(JSONObject data) throws JSONException {
+                try { 
+                    callback.onSuccess(data);
+                    token_bearer = data.getString("token");
+                    String BaseApi = baseApify(true);
+                    String jsonBody = hashMapFromDaviplata(daviplata);
+                    if (token_bearer != null) {
+                        try {
+                            post(BaseApi + "/payment/process/daviplata", jsonBody, token_bearer, callback);
+                        } catch (Exception e) {
+                            Log.e("epayco", "Error al hacer POST Daviplata: " + e.getMessage(), e);
+                            callback.onError(e);
+                        }
+                    }
+                } catch (Exception ex) {
+                    Log.e("epayco", "Excepción en onSuccess Daviplata: " + ex.getMessage(), ex);
+                    callback.onError(ex);
                 }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+                try {
+                    Log.e("epayco", "Error en autenticación Daviplata: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+                    Token.onError(error);
+                } catch (Exception ex) {
+                    Log.e("epayco", "Excepción en onError autenticación Daviplata: " + ex.getMessage(), ex);
+                    Token.onError(ex);
+                }
             }
         });
     }
@@ -1260,36 +1616,81 @@ public class Epayco {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            } catch (Exception ex) {
+                Log.e("epayco", "Excepción inesperada en onSuccess: " + ex.getMessage(), ex);
+                callback.onError(ex);
             }
+            }
+
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
+            try {
+                Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                if (e instanceof IOException) {
+                callback.onError(new Exception("Error de red o servidor: " + e.getMessage(), e));
+                } else if (e instanceof JSONException) {
+                callback.onError(new Exception("Error procesando la respuesta del servidor: " + e.getMessage(), e));
+                } else {
                 callback.onError(e);
+                }
+            } catch (Exception ex) {
+                Log.e("epayco", "Excepción inesperada en onError: " + ex.getMessage(), ex);
+                callback.onError(ex);
+            }
             }
         };
-        new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
+
+        new Authentication().AuthServiceApify(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
+            try {
                 token_bearer = data.getString("bearer_token");
                 String BaseApi = baseApify(true);
                 String jsonBody = hashMapFromDaviplataConfirm(confirm);
-                if(token_bearer != null){
+                if (token_bearer != null) {
+                post(BaseApi + "/payment/confirm/daviplata", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
                     try {
-                        post( BaseApi + "/payment/confirm/daviplata", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+                        if (response.has("status") && response.getBoolean("status")) {
+                          callback.onSuccess(data);
+                        } else {
+                        Log.e("epayco", "Error en confirmación Daviplata: " + response.toString());
+                        }
+                        callback.onSuccess(response);
+                    } catch (Exception ex) {
+                        Log.e("epayco", "Excepción en onSuccess confirmación Daviplata: " + ex.getMessage(), ex);
+                        callback.onError(ex);
                     }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud de confirmación Daviplata: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
                 }
+            } catch (Exception e) {
+                Log.e("epayco", "Excepción al procesar confirmación Daviplata: " + e.getMessage(), e);
+                callback.onError(e);
             }
+            }
+
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
+            try {
+                Log.e("epayco", "Error en autenticación confirmación Daviplata: " + (error != null ? error.getMessage() : "Error desconocido"), error);
                 Token.onError(error);
+            } catch (Exception ex) {
+                Log.e("epayco", "Excepción en onError autenticación confirmación Daviplata: " + ex.getMessage(), ex);
+                Token.onError(ex);
+            }
             }
         });
     }
@@ -1302,40 +1703,53 @@ public class Epayco {
      * @param safetypay   Safetypay model
      * @param callback    response request api
      */
-    public void createSafetypay(@NonNull final Safetypay safetypay, @NonNull final EpaycoCallback callback) {
+public void createSafetypay(@NonNull final Safetypay safetypay, @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                try {
-                    callback.onSuccess(data);
-                } catch (JSONException e) {
-                    callback.onError(e);
-                }
+            try {
+                callback.onSuccess(data);
+            } catch (JSONException e) {
+                Log.e("epayco", "Error procesando respuesta: " + e.getMessage(), e);
+                callback.onError(e);
+            }
             }
             @Override
             public void onError(Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                callback.onError(e);
+            Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+            callback.onError(e);
             }
         };
-        new Authentication().AuthServiceApify(apiKey,privateKey,new EpaycoCallback(){
+        new Authentication().AuthServiceApify(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-                token_bearer = data.getString("token");
-                String BaseApi = baseApify(true);
-                String jsonBody = hashMapFromSafetypay(safetypay);
-                if(token_bearer != null){
-                    try {
-                        post(BaseApi + "/payment/process/safetypay", jsonBody,token_bearer,callback);
-                    } catch (Exception e) {
-                        callback.onError(e);
+            token_bearer = data.getString("token");
+            String Base = base(false);
+            String jsonBody = hashMapFromSafetypay(safetypay);
+            if (token_bearer != null) {
+                try {
+                post(BASE_URL_APIFY + "/payment/process/safetypay", jsonBody, token_bearer, new EpaycoCallback() {
+                    @Override
+                    public void onSuccess(JSONObject response) throws JSONException {
+                   
+                    callback.onSuccess(response);
                     }
+                    @Override
+                    public void onError(Exception e) {
+                    Log.e("epayco", "Error en la solicitud: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                    callback.onError(e);
+                    }
+                });
+                } catch (Exception e) {
+                Log.e("epayco", "Excepción al procesar Safetypay: " + e.getMessage(), e);
+                callback.onError(e);
                 }
+            }
             }
             @Override
             public void onError(Exception error) {
-                Log.d("createToken","=>"+error);
-                Token.onError(error);
+            Log.e("epayco", "Error en autenticación Safetypay: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+            Token.onError(error);
             }
         });
     }
@@ -1385,7 +1799,7 @@ public class Epayco {
                     // Configurar la conexión
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("Content-Type", "application/json");
-                    connection.setRequestProperty("Authorization", "Bearer "+token);
+                    connection.setRequestProperty("Authorization", "Bearer " + token);
                     connection.setRequestProperty("type", "sdk-jwt ");
                     // Obtener la respuesta
                     int responseCode = connection.getResponseCode();
@@ -1400,7 +1814,13 @@ public class Epayco {
                             }
                             JSONObject response = new JSONObject(new String(data));
                             // Llamar al método onSuccess del Callback
-                            Log.e("epaycoResponse",response.toString());
+                            if (response.has("status") && !response.getBoolean("status")) {
+                                Log.e("epaycoError", "Error validando datos: " + response.toString());
+                            } else if (response.has("status") && response.get("status").equals("error")) {
+                                Log.e("epaycoError", "Error validando datos: " + response.toString());
+                            } else {
+                                Log.d("epaycoResponse", response.toString());
+                            }
                             callback.onSuccess(response);
                         }
                     } else {
@@ -1417,8 +1837,9 @@ public class Epayco {
                     }
                 } catch (Exception e) {
                     // Llamar al método onError del Callback en caso de excepción
-                    Log.e("epaycoError",e.getMessage());
-                    callback.onError(e);
+                    String errorMsg = (e.getMessage() != null) ? e.getMessage() : "Error desconocido al realizar la petición GET";
+                    Log.e("epaycoError", errorMsg, e);
+                    callback.onError(new Exception("Error en la petición GET: " + errorMsg, e));
                 } finally {
                     if (connection != null) {
                         connection.disconnect();
@@ -1474,7 +1895,13 @@ public class Epayco {
                             }
                             JSONObject response = new JSONObject(new String(data));
                             // Llamar al método onSuccess del Callback
-                            Log.e("epaycoResponse",response.toString());
+                            if (response.has("status") && !response.getBoolean("status")) {
+                                Log.e("epaycoError", "Error validando datos: " + response.toString());
+                            } else if (response.has("status") && response.get("status").equals("error")) {
+                                Log.e("epaycoError", "Error validando datos: " + response.toString());
+                            } else {
+                                Log.d("epaycoResponse", response.toString());
+                            }
                             callback.onSuccess(response);
                         }catch (Exception e) {
                             // Llamar al método onError del Callback en caso de excepción
