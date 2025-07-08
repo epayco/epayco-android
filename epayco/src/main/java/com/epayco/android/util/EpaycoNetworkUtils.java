@@ -238,7 +238,13 @@ public class EpaycoNetworkUtils {
     public static String hashMapFromCharge(Charge charge) {
         JSONObject extras_epayco = new JSONObject();
         try {
-            extras_epayco.put("extra5","P47");
+    
+            String method = charge.getMethodConfirmation() != null ? charge.getMethodConfirmation() : "POST";
+            if ("POST".equalsIgnoreCase(method)) {
+                if (!extras_epayco.has("extra5") || extras_epayco.isNull("extra5") || extras_epayco.optString("extra5").isEmpty()) {
+                    extras_epayco.put("extra5", "P47");
+                }
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -301,7 +307,13 @@ public class EpaycoNetworkUtils {
         }
         JSONObject extras_epayco = new JSONObject();
         try {
-            extras_epayco.put("extra5",encrypt("P47", secretKey));
+    
+            String method = options.optString("method", "POST");
+            if ("POST".equalsIgnoreCase(method)) {
+                if (!extras_epayco.has("extra5") || extras_epayco.isNull("extra5") || extras_epayco.optString("extra5").isEmpty()) {
+                    extras_epayco.put("extra5", encrypt("P47", secretKey));
+                }
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -364,7 +376,13 @@ public class EpaycoNetworkUtils {
         String apiKey = null, secretKey = null, test = null;
         JSONObject extras_epayco = new JSONObject();
         try {
-            extras_epayco.put("extra5","P47");
+    
+            String method = options.optString("method", "POST");
+            if ("POST".equalsIgnoreCase(method)) {
+                if (!extras_epayco.has("extra5") || extras_epayco.isNull("extra5") || extras_epayco.optString("extra5").isEmpty()) {
+                    extras_epayco.put("extra5", "P47");
+                }
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -430,7 +448,13 @@ public class EpaycoNetworkUtils {
         JSONObject daviplataParams = new JSONObject();
         JSONObject extras_epayco = new JSONObject();
         try {
-            extras_epayco.put("extra5","P47");
+    
+            String method = daviplata.getMethodConfirmation() != null ? daviplata.getMethodConfirmation() : "POST";
+            if ("POST".equalsIgnoreCase(method)) {
+                if (!extras_epayco.has("extra5") || extras_epayco.isNull("extra5") || extras_epayco.optString("extra5").isEmpty()) {
+                    extras_epayco.put("extra5", "P47");
+                }
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -483,7 +507,13 @@ public class EpaycoNetworkUtils {
 
         JSONObject extras_epayco = new JSONObject();
         try {
-            extras_epayco.put("extra5","P47");
+    
+            String method = safetypay.getMethodConfirmation() != null ? safetypay.getMethodConfirmation() : "POST";
+            if ("POST".equalsIgnoreCase(method)) {
+                if (!extras_epayco.has("extra5") || extras_epayco.isNull("extra5") || extras_epayco.optString("extra5").isEmpty()) {
+                    extras_epayco.put("extra5", "P47");
+                }
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
