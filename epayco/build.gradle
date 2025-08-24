@@ -34,3 +34,26 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+// 🔧 Configuración para JitPack y publicación
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                afterEvaluate {
+                    from components.findByName("release")
+                }
+
+                groupId = 'com.github.epayco'
+                artifactId = 'epayco-android'
+                version = '3.16.0'
+
+                pom {
+                    name = 'epayco-android'
+                    description = 'SDK Android de Epayco'
+                }
+            }
+        }
+    }
+
+}
