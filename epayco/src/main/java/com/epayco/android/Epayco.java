@@ -1266,7 +1266,7 @@ public class Epayco {
     /**
      * Get Banks List
      */
-    public void getBanks( @NonNull final EpaycoCallback callback) {
+ public void getBanks( @NonNull final EpaycoCallback callback) {
         final EpaycoCallback Token = new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) {
@@ -1285,41 +1285,38 @@ public class Epayco {
         new Authentication().AuthService(apiKey, privateKey, new EpaycoCallback() {
             @Override
             public void onSuccess(JSONObject data) throws JSONException {
-            token_bearer = data.getString("bearer_token");
-//            Log.i("epayco", "Token bearer: " + token_bearer);
-            String Base = base(true);
-//            String Base = baseApify(true);
-            String strTest = test ? "1" : "2";
-            String testStr = apiKey + "&test=" + strTest;
-            if (token_bearer != null) {
-                try {
-                get(Base + "/pse/bancos.json?public_key=" + testStr, null, token_bearer, new EpaycoCallback() {
+                token_bearer = data.getString("bearer_token");
+                String Base = base(true);
+                boolean strTest = test ? Boolean.TRUE : Boolean.FALSE;
+                String testStr = apiKey + "&test=" + strTest;
+                if (token_bearer != null) {
+                    try {
+                        get(Base + "/pse/bancos.json?public_key=" + testStr, null, token_bearer, new EpaycoCallback() {
 
-                    @Override
-                    public void onSuccess(JSONObject response) throws JSONException {
-                  
-                    callback.onSuccess(response);
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+
+                                callback.onSuccess(response);
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("epayco", "Error en la solicitud de bancos: " + (e != null ? e.getMessage() : "Error desconocido"), e);
+                                callback.onError(e);
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.e("epayco", "Excepción al obtener bancos: " + e.getMessage(), e);
+                        callback.onError(e);
                     }
-                    @Override
-                    public void onError(Exception e) {
-                    Log.e("epayco", "Error en la solicitud de bancos: " + (e != null ? e.getMessage() : "Error desconocido"), e);
-                    callback.onError(e);
-                    }
-                });
-                } catch (Exception e) {
-                Log.e("epayco", "Excepción al obtener bancos: " + e.getMessage(), e);
-                callback.onError(e);
                 }
-            }
             }
             @Override
             public void onError(Exception error) {
-            Log.e("epayco", "Error en autenticación al obtener bancos: " + (error != null ? error.getMessage() : "Error desconocido"), error);
-            Token.onError(error);
+                Log.e("epayco", "Error en autenticación al obtener bancos: " + (error != null ? error.getMessage() : "Error desconocido"), error);
+                Token.onError(error);
             }
         });
     }
-
     /***************************
      * Access cash definitions *
      ***************************/
