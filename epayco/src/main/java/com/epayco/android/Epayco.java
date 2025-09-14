@@ -60,10 +60,10 @@ public class Epayco {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static final String BASE_URL = System.getenv("BASE_URL_SDK") != null ? System.getenv("BASE_URL_SDK") : "https://eks-subscription-api-lumen-service.epayco.io";
-    public static final String BASE_URL_SECURE = System.getenv("SECURE_URL_SDK") != null ? System.getenv("SECURE_URL_SDK") : "https://eks-rest-pagos-service.epayco.io";
+    public static final String BASE_URL = System.getenv("BASE_URL_SDK") != null ? System.getenv("BASE_URL_SDK") : "https://api.secure.payco.co";
+    public static final String BASE_URL_SECURE = System.getenv("SECURE_URL_SDK") != null ? System.getenv("SECURE_URL_SDK") : "https://api.secure.payco.co";
     public static final String ENTORNO = System.getenv("ENTORNO_SDK") != null ? System.getenv("ENTORNO_SDK") : "/restpagos";
-    public static final String BASE_URL_APIFY = System.getenv("BASE_URL_APIFY") != null ? System.getenv("BASE_URL_APIFY") : "https://eks-apify-service.epayco.io";
+    public static final String BASE_URL_APIFY = System.getenv("BASE_URL_APIFY") != null ? System.getenv("BASE_URL_APIFY") : "https://apify.epayco.co";
 
     private static final int MAX_TIME_OUT= 190*10000;
 
